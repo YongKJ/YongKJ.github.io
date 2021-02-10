@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/favicon.ico">
+  <title>版本控制 | YongKJ</title>
+  <meta name="author" content="yongkj" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    
+      <meta name="description" itemprop="description" content="Pursue excellence and success will follow." />
+    
+  
+  <meta name="description" content="为什么要使用版本管理工具 备份文件：我们在日常开发中，代码备份必不可少。可以采用移动硬盘、网盘的形式来备份，但是以这种形式也有很多弊端。我们程序员一天的工作量都写在几个文件里面，如果说因为一些未知因素导致丢失了，这种情况损失还是挺大的。 历史记录：即使我们上面所说，通过硬盘、网盘来备份，也只能保存当前最新的文件。而版本工具可以备份每一次所提交的代码，以及可以记录详细的修改信息，比如说某一行代码是谁">
+<meta property="og:type" content="article">
+<meta property="og:title" content="版本控制">
+<meta property="og:url" content="https://blog.yongkj.cn/2021/02/01/java-version-control/index.html">
+<meta property="og:site_name" content="YongKJ">
+<meta property="og:description" content="为什么要使用版本管理工具 备份文件：我们在日常开发中，代码备份必不可少。可以采用移动硬盘、网盘的形式来备份，但是以这种形式也有很多弊端。我们程序员一天的工作量都写在几个文件里面，如果说因为一些未知因素导致丢失了，这种情况损失还是挺大的。 历史记录：即使我们上面所说，通过硬盘、网盘来备份，也只能保存当前最新的文件。而版本工具可以备份每一次所提交的代码，以及可以记录详细的修改信息，比如说某一行代码是谁">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.yongkj.cn/2021/02/01/java-version-control/02%E7%94%B5%E8%84%91%E5%A3%81%E7%BA%B81920x1080.png">
+<meta property="article:published_time" content="2021-02-01T02:35:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:01:49.000Z">
+<meta property="article:author" content="yongkj">
+<meta property="article:tag" content="管理">
+<meta property="article:tag" content="命令">
+<meta property="article:tag" content="暂存">
+<meta property="article:tag" content="仓库">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.yongkj.cn/2021/02/01/java-version-control/02%E7%94%B5%E8%84%91%E5%A3%81%E7%BA%B81920x1080.png">
+<meta name="twitter:site" content="@Candiinya">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="highlight-css" href="/css/highlight.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <div class="nav-toggle"><a class="kratos-nav-toggle js-kratos-nav-toggle"><i></i></a></div>
+            <header id="kratos-header-section">
+                <div class="container">
+                    <div class="nav-header">
+                        <div class="color-logo"><a href="/">YongKJ</a></div>
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                            
+                            
+                                <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                            
+                            
+                            
+                                <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                            
+                            
+                            
+                                <li>
+                                <a><i class="fa fa-link"></i>链接</a>
+                                <ul class="sub-menu">
+                                    
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://software.yongkj.cn/software/">软件俱乐部</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://pocketyun.yongkj.cn/pocketyun/">袖珍网盘吧</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://study.yongkj.cn/">英语随身学</a></li>
+                                    
+                                    
+                                </ul>
+                                </li>
+                            
+                            
+                            
+                                <li><a href="/atom.xml"><i class="fa fa-rss"></i>RSS 订阅</a></li>
+                            
+                            
+                            
+                                <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                            
+                            
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/"><h2>YongKJ</h2><br><span>勇往直前，永不言弃</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                    <div class="row">
+                        
+        <div id="main">
+            <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                <h1 class="kratos-entry-title text-center">版本控制</h1>
+                
+                <div class="kratos-post-meta text-center">
+                    <span>
+                        <i class="fa fa-calendar"></i> 2021-02-01
+                        <i class="fa fa-folder"></i> 分类于 <a class="label-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a>
+                        <i class="fa fa-user"></i> 作者 yongkj
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~8.05K
+                        
+                        字
+                        
+                    </span>
+                </div>
+            </header>
+            <div class="kratos-post-content">
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">为什么要使用版本管理工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%EF%BC%88Version-Control-System%EF%BC%89%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">版本控制（Version Control System）作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E7%9A%84%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E4%BA%A7%E5%93%81"><span class="toc-number">3.</span> <span class="toc-text">主流的版本控制产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SVN"><span class="toc-number">4.</span> <span class="toc-text">SVN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">5.</span> <span class="toc-text">Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">6.</span> <span class="toc-text">Git 常用基础命令</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="为什么要使用版本管理工具"><a href="#为什么要使用版本管理工具" class="headerlink" title="为什么要使用版本管理工具"></a>为什么要使用版本管理工具</h3><ol>
+<li><strong>备份文件</strong>：我们在日常开发中，代码备份必不可少。可以采用移动硬盘、网盘的形式来备份，但是以这种形式也有很多弊端。我们程序员一天的工作量都写在几个文件里面，如果说因为一些未知因素导致丢失了，这种情况损失还是挺大的。</li>
+<li><strong>历史记录</strong>：即使我们上面所说，通过硬盘、网盘来备份，也只能保存当前最新的文件。而版本工具可以备份每一次所提交的代码，以及可以记录详细的修改信息，比如说某一行代码是谁在什么时候进行提交的。</li>
+<li><strong>版本回退</strong>：当我们在开发过程中，也难免一些刚刚入职的同事不小心对代码所造成的伤害难以弥补的时候，这个时候我们也可以通版本管理工具，将当前的代码回退到之前提交的某个版本。</li>
+<li><strong>多端共享</strong>：提供进行团队合作使用，总不能同事A写了一个方法，同事B需要用到这个方法，总不能让同事A拿着硬盘拷贝过去吧，所以采用管理工具只需将代码提交即可。 </li>
+</ol>
+<h3 id="版本控制（Version-Control-System）作用"><a href="#版本控制（Version-Control-System）作用" class="headerlink" title="版本控制（Version Control System）作用"></a>版本控制（Version Control System）作用</h3><ol>
+<li>记录文件的所有历史变化</li>
+<li>错误恢复到某个历史版本</li>
+<li>多人协作开发编辑同一个文件</li>
+</ol>
+<h3 id="主流的版本控制产品"><a href="#主流的版本控制产品" class="headerlink" title="主流的版本控制产品"></a>主流的版本控制产品</h3><table>
+<thead>
+<tr>
+<th>名称</th>
+<th>模型</th>
+<th>并发模式</th>
+<th>历史模式</th>
+<th>变更范围</th>
+<th>网络协议</th>
+<th>原子提交性</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><strong>CVS</strong></td>
+<td>Client-server</td>
+<td>Merge</td>
+<td>Changeset</td>
+<td>File</td>
+<td>Pserver,ssh</td>
+<td>No</td>
+</tr>
+<tr>
+<td><strong>SVN</strong></td>
+<td>Client-server</td>
+<td>3-way merge, recursive merge, octopus merge</td>
+<td>Changeset and Snapshot</td>
+<td>Tree</td>
+<td>custom (svn), custom (svn) over ssh, HTTP and SSL (usingWebDAV)</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td><strong>Git</strong></td>
+<td>Distributed</td>
+<td>Merge or lock</td>
+<td>Snapshot</td>
+<td>Tree</td>
+<td>custom, custom over ssh, rsync, HTTP/HTTPS, email, bundles</td>
+<td>Yes</td>
+</tr>
+</tbody></table>
+<ol>
+<li><strong>版本库模型（Repository model）：</strong>描述了多个源码版本库副本间的关系，有客户端/服务器和分布式两种模式。在客户端/服务器模式下，每一用户通过客户端访问位于服务器的主版本库，每一客户机只需保存它所关注的文件副本，对当前工作副本（working copy）的更改只有在提交到服务器之后，其它用户才能看到对应文件的修改。而在分布式模式下，这些源码版本库副本间是对等的实体，用户的机器出了保存他们的工作副本外，还拥有本地版本库的历史信息。</li>
+<li><strong>并发模式（Concurrency model）：</strong>描述了当同时对同一工作副本/文件进行更改或编辑时，如何管理这种冲突以避免产生无意义的数据，有排它锁和合并模式。在排它锁模式下，只有发出请求并获得当前文件排它锁的用户才能对对该文件进行更改。而在合并模式下，用户可以随意编辑或更改文件，但可能随时会被通知存在冲突（两个或多个用户同时编辑同一文件），于是版本控制工具或用户需要合并更改以解决这种冲突。因此，几乎所有的分布式版本控制软件采用合并方式解决并发冲突。</li>
+<li><strong>历史模式（History model）：</strong>描述了如何在版本库中存贮文件的更改信息，有快照和改变集两种模式。在快照模式下，版本库会分别存储更改发生前后的工作副本；而在改变集模式下，版本库除了保存更改发生前的工作副本外，只保存更改发生后的改变信息。</li>
+<li><strong>变更范围（Scope of change）：</strong>描述了版本编号是针对单个文件还是整个目录树。</li>
+<li><strong>网络协议（Network protocols）：</strong>描述了多个版本库间进行同步时采用的网络协议。</li>
+<li><strong>原子提交性（Atomic commit）：</strong>描述了在提交更改时，能否保证所有更改要么全部提交或合并，要么不会发生任何改变。</li>
+</ol>
+<blockquote>
+<p>简而言之，各有优缺点，git要配合hub，可以避免分布式损坏。svn有权限控制，避免全被clone走。git适合纯代码，svn适合综合性文档管理，结合起来就完美。显然最大的不同在于git是分布式的。</p>
+</blockquote>
+<h3 id="SVN"><a href="#SVN" class="headerlink" title="SVN"></a>SVN</h3><p><img src="http://file.yongkj.cn/fileSystem/admin/My%20Learning%20Material/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/20180812141826593.png"></p>
+<ol>
+<li>优点：团队协作开发，代码集中化管理。</li>
+<li>缺点：单点故障，必须联网工作，无法单机本地工作。</li>
+</ol>
+<h3 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h3><ol>
+<li>git的概念</li>
+</ol>
+<p>​      1）git是世界上目前最先进的分布式版本控制系统,致力于团队、个人进行项目版本管理，完美的解决难以比较代码、难以合并代码、难以取消修改、难以在写当前代码的过程中保存未完成的修改去修改线上版本的bug等的痛点。</p>
+<p>​      2）git是一个非常强大的工具，但作为一个git使用者来说，不用完全学习Git的知识点与命令，因为有的命令的使用频率非常的低甚至数年都不会用到。</p>
+<ol start="2">
+<li>git的历史</li>
+</ol>
+<p>​      1）Linus在1991年创建了开源的Linux，从此，Linux系统不断发展，已经成为最大的服务器系统软件了。Linus虽然创建了Linux的核心，但Linux的壮大是靠全世界热心的志愿者参与的，这么多人在世界各地为Linux编写代码，那Linux的代码是如何管理的呢？</p>
+<p>​      2）事实是，在2002年以前，世界各地的志愿者把源代码文件通过diff的方式发给Linus，然后由Linus本人通过手工方式合并代码！你也许会想，为什么Linus不把Linux代码放到版本控制系统里呢？不是有CVS、SVN这些免费的版本控制系统吗？因为Linus坚定地反对CVS和SVN，这些集中式的版本控制系统不但速度慢，而且必须联网才能使用。有一些商用的版本控制系统，虽然比CVS、SVN好用，但那是付费的，和Linux的开源精神不符。不过，到了2002年，Linux系统已经发展了十年了，代码库之大让Linus很难继续通过手工方式管理了，社区的弟兄们也对这种方式表达了强烈不满，于是Linus选择了一个商业的版本控制系统BitKeeper，BitKeeper的东家BitMover公司出于人道主义精神，授权Linux社区免费使用这个版本控制系统。</p>
+<p>​      3）安定团结的大好局面在2005年就被打破了，原因是Linux社区牛人聚集，不免沾染了一些梁山好汉的江湖习气。开发Samba的Andrew试图破解BitKeeper的协议（这么干的其实也不只他一个），被BitMover公司发现了（监控工作做得不错！），于是BitMover公司怒了，要收回Linux社区的免费使用权。Linus可以向BitMover公司道个歉，保证以后严格管教弟兄们，嗯，这是不可能的。实际情况是这样的：Linus花了两周时间自己用C写了一个分布式版本控制系统，这就是Git！一个月之内，Linux系统的源码已经由Git管理了！牛是怎么定义的呢？大家可以体会一下。</p>
+<p>​      4）Git迅速成为最流行的分布式版本控制系统，尤其是2008年，GitHub网站上线了，它为开源项目免费提供Git存储，无数开源项目开始迁移至GitHub，包括jQuery，PHP，Ruby等等。历史就是这么偶然，如果不是当年BitMover公司威胁Linux社区，可能现在我们就没有免费而超级好用的Git了。</p>
+<blockquote>
+<p>git是linux的创始人linus，在付费版本控制工具BitMover收回对Linux社区免费使用权利的时候，一怒之下花费两个星期的时间写出来的。（不要逼牛笔的人）</p>
+</blockquote>
+<ol start="3">
+<li>组成结构</li>
+</ol>
+<p><img src="http://file.yongkj.cn/fileSystem/admin/My%20Learning%20Material/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/20180812142233148.png"></p>
+<p>​      1）<strong>工作区</strong>：用来保存项目的元数据和对象数据库的地方。 这是 Git 中最重要的部分，从其它计算机克隆仓库时，拷贝的就是这里的数据。</p>
+<p>​      2）<strong>暂存区</strong>：保存了下次将提交的文件列表信息，一般在 Git 仓库目录中。有时候也被称作“索引”，不过一般说法还是叫暂存区域。</p>
+<p>​      3）<strong>版本库</strong>：也叫本地版本库，之所以说git 快，大部分提交都是对本地仓库而言的，不依赖网络，最后一次会推送的到远程仓库。</p>
+<p>​      4）<strong>远程仓库</strong>：可以看做是github，它是一个远程仓库，它提供web服务的 供大家方便下载、查看、提交、存储。文件的状态</p>
+<ol start="4">
+<li>文件状态</li>
+</ol>
+<p><img src="http://file.yongkj.cn/fileSystem/admin/My%20Learning%20Material/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/2018081214362389.png"></p>
+<p>​      1）新建文件状态为untracked</p>
+<p>​      2）add命令执行后状态变为staged</p>
+<p>​      3）已存在的文件状态为unmodified</p>
+<p>​      4）修改文件内容，文件状态变为modified</p>
+<p>​      5）commit提交，文件状态编程unmodifed。</p>
+<h3 id="Git-常用基础命令"><a href="#Git-常用基础命令" class="headerlink" title="Git 常用基础命令"></a>Git 常用基础命令</h3><ol>
+<li>配置用户信息</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.email &quot;dxj1718874198@gmail.com&quot;</span><br><span class="line"></span><br><span class="line">git config --global user.name &quot;YongKJ&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>初始化本地 Git 仓库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>查看 Git 仓库状态</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br><span class="line">	</span><br><span class="line">git status -s #得到一种更为紧凑的格式输出</span><br></pre></td></tr></table></figure>
+
+<p>​     <img src="http://file.yongkj.cn/fileSystem/admin/My%20Learning%20Material/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/20190621173015577.png"></p>
+<p>​      1）新添加的未跟踪文件前面有 ?? 标记；</p>
+<p>​      2）新添加到暂存区中的文件前面有 A 标记；</p>
+<p>​      3）修改过的文件前面有 M 标记。 M 有两个可以出现的位置：</p>
+<p>​      4）出现在右边的 M 表示该文件被修改了但是还没放入暂存区，</p>
+<p>​      5）出现在靠左边的 M 表示该文件被修改了并放入了暂存区。</p>
+<p>​      6）加到暂存区之后，又修改了一次，修改之后，并没有添加到暂存区，前面有MM标记。</p>
+<p>​      7）以此类推，如果加到暂存区之后，被修改了两次，修改之后，并没有添加到暂存区，前面有MMM标记。…</p>
+<ol start="4">
+<li>文件添加到暂存区</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">git add file1</span><br><span class="line"></span><br><span class="line">git add -A # 提交所有变化</span><br><span class="line"></span><br><span class="line">git add -u # 提交被修改(modified)和被删除(deleted)文件，不包括新文件(new)</span><br><span class="line"></span><br><span class="line">git add . # 提交新文件(new)和被修改(modified)文件，不包括被删除(deleted)文件</span><br><span class="line">	</span><br><span class="line">git add * # 会忽略.gitignore把任何文件都加入</span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>将本地暂存的修改提交到版本库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git commit -m &quot;add file1&quot; file1</span><br><span class="line"></span><br><span class="line">git commit -m &#x27;提交信息&#x27; # -m 参数是输入提交信息</span><br><span class="line">	</span><br><span class="line">git commit -a -m &#x27;提交信息&#x27; # -a 参数可以把还没有执行add命令的修改一起提交</span><br></pre></td></tr></table></figure>
+
+<ol start="6">
+<li>查看文件的修改内容</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git diff file1</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>查看git仓库提交日志</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br><span class="line">	</span><br><span class="line">git log --stat # 在git log 的基础上输出文件增删改的统计数据</span><br><span class="line">	</span><br><span class="line">git log --oneline # 简化git log的默认的输出，仅仅输出commit hash 前7个字符串和commit</span><br></pre></td></tr></table></figure>
+
+<ol start="8">
+<li>查看所有分支的所有操作记录</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog # 包括已经被删除的 commit 记录和 reset 的操作</span><br></pre></td></tr></table></figure>
+
+<ol start="9">
+<li>忽略文件</li>
+</ol>
+<p><img src="http://file.yongkj.cn/fileSystem/admin/My%20Learning%20Material/%E9%9D%A2%E8%AF%95%E8%B5%84%E6%96%99/%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6/FastStoneEditor1.png"></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">.DS_Store</span><br><span class="line">node_modules</span><br><span class="line">/dist</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> <span class="built_in">local</span> env files</span></span><br><span class="line">.env.local</span><br><span class="line">.env.*.local</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Log files</span></span><br><span class="line">npm-debug.log*</span><br><span class="line">yarn-debug.log*</span><br><span class="line">yarn-error.log*</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> Editor directories and files</span></span><br><span class="line">.idea</span><br><span class="line">.vscode</span><br><span class="line">*.suo</span><br><span class="line">*.ntvs*</span><br><span class="line">*.njsproj</span><br><span class="line">*.sln</span><br><span class="line">*.sw?</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>​      1）创建一个名为 .gitignore 的文件，列出要忽略的文件模式</p>
+<p>​      2）星号（*）匹配零个或多个任意字符；</p>
+<p>​      3）[abc] 匹配任何一个列在方括号中的字符（这个例子要么匹配一个 a，要么匹配一个 b，要么匹配一个c）；</p>
+<p>​      4）问号（?）只匹配一个任意字符；</p>
+<p>​      5）如果在方括号中使用短划线分隔两个字符，表示所有在这两个字符范围内的都可以匹配（比如 [0-9]表示匹配所有 0 到 9 的数字）。</p>
+<p>​      6）使用两个星号（*) 表示匹配任意中间目录，比如a/**/z 可以匹配 a/z, a/b/z 或a/b/c/z等</p>
+<ol start="10">
+<li>工作区和暂存区</li>
+</ol>
+<p>​      1）工作区有一个隐藏目录.git，这个不算工作区，而是Git的版本库。</p>
+<p>​      2）Git的版本库里存了很多东西，其中最重要的就是称为stage（或者叫index）的暂存区，还有Git为我们自动创建的第一个分支master，以及指向master的一个指针叫HEAD。</p>
+<p>​      3）第一步是用git add把文件添加进去，实际上就是把文件修改添加到暂存区；</p>
+<p>​      4）第二步是用git commit提交更改，实际上就是把暂存区的所有内容提交到当前分支。</p>
+<ol start="11">
+<li>丢弃工作区的修改</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout -- file1</span><br></pre></td></tr></table></figure>
+
+<ol start="12">
+<li>撤销暂存区的修改（unstage），重新放回工作区</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset HEAD</span><br></pre></td></tr></table></figure>
+
+<ol start="13">
+<li>版本回退</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br><span class="line">	</span><br><span class="line">git reset --hard ID号码</span><br></pre></td></tr></table></figure>
+
+<ol start="14">
+<li>误删，还原</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git checkout file1</span><br></pre></td></tr></table></figure>
+
+<ol start="15">
+<li>删除版本库中文件</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git rm file1</span><br><span class="line">	</span><br><span class="line">git commit -m &quot;del file1&quot;</span><br></pre></td></tr></table></figure>
+
+<ol start="16">
+<li>创建分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch &lt;branch_name&gt;</span><br></pre></td></tr></table></figure>
+
+<ol start="17">
+<li>查看分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch # 查看所有分支</span><br><span class="line">	</span><br><span class="line">git branch -v # 查看所有分支详情</span><br></pre></td></tr></table></figure>
+
+<ol start="18">
+<li>切换分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git checkout &lt;branch_name&gt; # 切换到指定分支</span><br><span class="line">	</span><br><span class="line">git checkout -b &lt;branch_name&gt; # 创建并切换到指定分支</span><br></pre></td></tr></table></figure>
+
+<ol start="19">
+<li>删除分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git branch -d &lt;branch_name&gt; # 删除一个干净的分支(即相对当前分支而言该分支没有新的提交记录)</span><br><span class="line"></span><br><span class="line">git branch -D &lt;branch_name&gt; # 强制删除一个分支，该分支有没有合并到当前分支的提交记录</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意：删除分支前都需要先切换到其他分支才能进行删除操作</p>
+</blockquote>
+<ol start="20">
+<li>分支恢复</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git reflog # 查找该分支指向的commitId</span><br><span class="line">	</span><br><span class="line">git branch &lt;branch_name&gt; &lt;hash_val&gt; # 根据指定commit创建新分支</span><br></pre></td></tr></table></figure>
+
+<ol start="21">
+<li>重命名分支</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git branch -m &lt;branch_name&gt; newname</span><br></pre></td></tr></table></figure>
+
+<ol start="22">
+<li>分支合并</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge &lt;branch_name&gt; # 将指定分支合并到当前分支，如果两个分支没有产生分叉情况，那么会进行快速合并，即fast-forward方式</span><br></pre></td></tr></table></figure>
+
+<ol start="23">
+<li>分支合并细节</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git merge --no-ff -m &quot;msg&quot; &lt;branch_name&gt; # 合并分支时禁用Fast forward模式</span><br></pre></td></tr></table></figure>
+
+<ol start="24">
+<li>冲突解决</li>
+</ol>
+<p>​      1）当对分叉分支进行合并时，如果两个分支都对同一文件进行了修改，那么合并时就有可能会产生冲突情况。</p>
+<p>​      2）如果两个分支对同一文件的修改是有规律的，比如对不同地方的修改，那么git工具可以实现自动合并</p>
+<p>​      3）如果无法自动合并，则需要对冲突文件进行手动修改，修改完成后使用git add表示冲突已经解决，然后使用git commit进行提交</p>
+<ol start="25">
+<li>分支暂存</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash # 将工作暂存</span><br><span class="line"></span><br><span class="line">git stash list # 所有的暂存状态</span><br></pre></td></tr></table></figure>
+
+<ol start="26">
+<li>从暂存区之中进行恢复，有两种处理方式：</li>
+</ol>
+<p>​      1）先恢复，而后再删除暂存</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git stash apply</span><br><span class="line"></span><br><span class="line">git stash drop</span><br></pre></td></tr></table></figure>
+
+<p>​      2）恢复的同时也将stash内容删除</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git stash pop</span><br></pre></td></tr></table></figure>
+
+<ol start="27">
+<li>本地仓库推送到远程仓库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">git remote add origin 远程仓库地址 # 将本地仓库和远程仓库进行关联</span><br><span class="line">	</span><br><span class="line">git push -u origin master # 把本地仓库的项目推送到远程仓， 第一次推送</span><br><span class="line">	</span><br><span class="line">git push origin master # 第一次推送后，直接使用该命令即可推送修改</span><br><span class="line"></span><br><span class="line">git push origin 本地分支:远端希望创建的分支</span><br><span class="line"></span><br><span class="line">git push origin master:my_remote_new_branch # 远端即可创建新的分支my_remote_new_branch,提交本地修改</span><br><span class="line"></span><br><span class="line">git remote -v # 查看远程仓库地址命令</span><br><span class="line"></span><br><span class="line">git remote set-url origin url # 直接修改远程仓库地址</span><br><span class="line"></span><br><span class="line">git remote rm origin # 删除本地远程仓库地址</span><br><span class="line"></span><br><span class="line">git remote add origin url # 然后添加新的仓库地址</span><br><span class="line"></span><br><span class="line">git config --global http.proxy &#x27;http://127.0.0.1:58591&#x27;</span><br><span class="line"></span><br><span class="line">git config --global https.proxy &#x27;socks5://127.0.0.1:51837&#x27;</span><br><span class="line"></span><br><span class="line">git config --global --unset http.proxy</span><br><span class="line"></span><br><span class="line">git config --global --unset https.proxy</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>注意有坑： 新建远程仓库的时候如果你勾选了<code>Initialize this repository with a README</code>（就是创建仓库的时候自动给你创建一个README文件），那么到了第7步你将本地仓库内容推送到远程仓库的时候就会报一个<code>failed to push some refs to 远程仓库地址</code>的错。</p>
+<p>原因： 由于你新创建的那个仓库里面的<code>README.md</code>文件不在本地仓库目录中，这时我们可以通过<code>git pull --rebase origin master</code>命令先将内容合并,此时再push就能成功了。</p>
+</blockquote>
+<ol start="28">
+<li>克隆远程仓库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git clone 远程仓库地址 # 从远程服务器克隆一个一模一样的版本库到本地，复制的是整个版本库</span><br></pre></td></tr></table></figure>
+
+<ol start="29">
+<li>获取最新版本远程仓库</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">git fetch</span><br><span class="line"></span><br><span class="line">git pull # 从远程获取最新版本并merge（合并）到本地，git pull = git fetch + git merge，git fetch更安全一些</span><br></pre></td></tr></table></figure>
+
+<ol start="30">
+<li>清理本地仓库（以Hexo静态博客为例）</li>
+</ol>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 由于现在的.git文件夹里累积了太多辣鸡数据，甚至已经超过博客本身的大小了，于是打算从头开始重新部署一下博客的所有静态资源。</span></span><br><span class="line"></span><br><span class="line">git checkout --orphan new_branch # 新建空白分枝</span><br><span class="line"></span><br><span class="line">npm run build # 生成静态文件</span><br><span class="line"></span><br><span class="line">git add . # 添加文件到暂存区</span><br><span class="line"></span><br><span class="line">git commit -m &#x27;提交信息&#x27; # 提交分枝更改</span><br><span class="line"></span><br><span class="line">git branch -D master # 删除旧主分枝</span><br><span class="line"></span><br><span class="line">git branch -m master # 改名为主分枝</span><br><span class="line"></span><br><span class="line">git push -f origin master # 强制推至上游</span><br><span class="line"></span><br><span class="line"><span class="meta">#</span><span class="bash"> 干净的博客出现了！</span></span><br></pre></td></tr></table></figure>
+            </div>
+            
+                <div class="kratos-copyright text-center clearfix">
+                    <h5>本作品采用 <a rel="license nofollow" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                    <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                    
+                    
+                        <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                        <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://blog.yongkj.cn/2021/02/01/java-version-control/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://blog.yongkj.cn/2021/02/01/java-version-control/";
+            const title         = "「版本控制」";
+            const excerpt       = `为什么要使用版本管理工具
+备份文件：我们在日常开发中，代码备份必不可少。可以采用移动硬盘、网盘的形式来备份，但是以这种形式也有很多弊端。我们程序员一天的工作量都写在几个文件里面，如果说因为一些未知因素导致丢失了，这种情况损失还是挺大的...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                    
+                    </div>
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/%E4%BB%93%E5%BA%93/" rel="tag">仓库</a>, <a class="tag-none-link" href="/tags/%E5%91%BD%E4%BB%A4/" rel="tag">命令</a>, <a class="tag-none-link" href="/tags/%E6%9A%82%E5%AD%98/" rel="tag">暂存</a>, <a class="tag-none-link" href="/tags/%E7%AE%A1%E7%90%86/" rel="tag">管理</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-02-10</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" 数据库" href="/2021/01/31/java-database/">&lt; 上一篇</a>
+                </div>
+                
+                
+                <div class="nav-next clearfix">
+                    <a title=" 设计模式" href="/2021/02/02/java-design-mode/">下一篇 &gt;</a>
+                </div>
+                
+            </nav>
+        
+        
+    </article>
+</section>
+        </div>
+                
+            <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+                
+                    <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E7%89%88%E6%9C%AC%E7%AE%A1%E7%90%86%E5%B7%A5%E5%85%B7"><span class="toc-number">1.</span> <span class="toc-text">为什么要使用版本管理工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%EF%BC%88Version-Control-System%EF%BC%89%E4%BD%9C%E7%94%A8"><span class="toc-number">2.</span> <span class="toc-text">版本控制（Version Control System）作用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BB%E6%B5%81%E7%9A%84%E7%89%88%E6%9C%AC%E6%8E%A7%E5%88%B6%E4%BA%A7%E5%93%81"><span class="toc-number">3.</span> <span class="toc-text">主流的版本控制产品</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#SVN"><span class="toc-number">4.</span> <span class="toc-text">SVN</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git"><span class="toc-number">5.</span> <span class="toc-text">Git</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Git-%E5%B8%B8%E7%94%A8%E5%9F%BA%E7%A1%80%E5%91%BD%E4%BB%A4"><span class="toc-number">6.</span> <span class="toc-text">Git 常用基础命令</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+                    <!-- Moved to about.ejs -->
+                
+                    
+  <aside id="krw-categories" class="widget widget-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%80%E6%AC%A1/">第一次</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E4%B9%90%E7%A9%BA%E9%97%B4/">音乐空间</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86/">项目经历</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+                
+                    
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/apility/" style="font-size: 0.6em;">apility</a> <a href="/tags/bus/" style="font-size: 0.6em;">bus</a> <a href="/tags/city/" style="font-size: 0.6em;">city</a> <a href="/tags/comfort/" style="font-size: 0.6em;">comfort</a> <a href="/tags/communication/" style="font-size: 0.6em;">communication</a> <a href="/tags/contribute/" style="font-size: 0.6em;">contribute</a> <a href="/tags/convenient/" style="font-size: 0.6em;">convenient</a> <a href="/tags/develop/" style="font-size: 0.6em;">develop</a> <a href="/tags/education/" style="font-size: 0.6em;">education</a> <a href="/tags/enhance/" style="font-size: 0.6em;">enhance</a> <a href="/tags/facility/" style="font-size: 0.6em;">facility</a> <a href="/tags/flight/" style="font-size: 0.6em;">flight</a> <a href="/tags/foreign/" style="font-size: 0.6em;">foreign</a> <a href="/tags/free/" style="font-size: 0.6em;">free</a> <a href="/tags/hello/" style="font-size: 0.6em;">hello</a> <a href="/tags/improve/" style="font-size: 0.8em;">improve</a> <a href="/tags/information/" style="font-size: 0.6em;">information</a> <a href="/tags/invest/" style="font-size: 0.6em;">invest</a>
+      </div>
+  </aside>
+
+                
+                    
+  <aside id="krw-posts" class="widget widget-kratos-poststab">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/09/java-io-stream/"><i class="fa  fa-book"></i> 输入输出流</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/08/java-class-loading/"><i class="fa  fa-book"></i> 类加载</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/07/java-annotation/"><i class="fa  fa-book"></i> 注解</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/06/java-reflect/"><i class="fa  fa-book"></i> 反射</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/05/java-framework-annotations/"><i class="fa  fa-book"></i> 框架注解</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+                
+            </section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer">
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://twitter.com/Candiinya"><i class="fa fa-twitter"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/yongkj"><i class="fa fa-github"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 yongkj 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Made with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by <a href="https://candinya.com" target="_blank" rel="nofollow">Candinya</a>.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://www.yongkj.cn" target="_blank">勇往直前</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+<script async src="/js/candy.min.js"></script>
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+    </body>
+</html>

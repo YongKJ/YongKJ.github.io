@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/favicon.ico">
+  <title>线程 | YongKJ</title>
+  <meta name="author" content="yongkj" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    
+      <meta name="description" itemprop="description" content="Pursue excellence and success will follow." />
+    
+  
+  <meta name="description" content="进程与线程的关系 进程是操作系统资源分配的基本单位 线程是cpu调度和分配的基本单位 一个进程可以有多个线程 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率 线程的划分尺度小于进程，使得多线程程序的并发性高  线程的基本状态 新建状态（New）：当线程对象对创建后，即进入了新建状态，如：Thread t &#x3D; new MyThread(); 就绪状态（Runn">
+<meta property="og:type" content="article">
+<meta property="og:title" content="线程">
+<meta property="og:url" content="https://blog.yongkj.cn/2021/01/30/java-thread/index.html">
+<meta property="og:site_name" content="YongKJ">
+<meta property="og:description" content="进程与线程的关系 进程是操作系统资源分配的基本单位 线程是cpu调度和分配的基本单位 一个进程可以有多个线程 进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率 线程的划分尺度小于进程，使得多线程程序的并发性高  线程的基本状态 新建状态（New）：当线程对象对创建后，即进入了新建状态，如：Thread t &#x3D; new MyThread(); 就绪状态（Runn">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.yongkj.cn/2021/01/30/java-thread/03%E7%94%B5%E8%84%91%E5%A3%81%E7%BA%B81920x1080.png">
+<meta property="article:published_time" content="2021-01-30T12:16:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:01:42.000Z">
+<meta property="article:author" content="yongkj">
+<meta property="article:tag" content="创建">
+<meta property="article:tag" content="分配">
+<meta property="article:tag" content="状态">
+<meta property="article:tag" content="阻塞">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.yongkj.cn/2021/01/30/java-thread/03%E7%94%B5%E8%84%91%E5%A3%81%E7%BA%B81920x1080.png">
+<meta name="twitter:site" content="@Candiinya">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="highlight-css" href="/css/highlight.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <div class="nav-toggle"><a class="kratos-nav-toggle js-kratos-nav-toggle"><i></i></a></div>
+            <header id="kratos-header-section">
+                <div class="container">
+                    <div class="nav-header">
+                        <div class="color-logo"><a href="/">YongKJ</a></div>
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                            
+                            
+                                <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                            
+                            
+                            
+                                <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                            
+                            
+                            
+                                <li>
+                                <a><i class="fa fa-link"></i>链接</a>
+                                <ul class="sub-menu">
+                                    
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://software.yongkj.cn/software/">软件俱乐部</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://pocketyun.yongkj.cn/pocketyun/">袖珍网盘吧</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://study.yongkj.cn/">英语随身学</a></li>
+                                    
+                                    
+                                </ul>
+                                </li>
+                            
+                            
+                            
+                                <li><a href="/atom.xml"><i class="fa fa-rss"></i>RSS 订阅</a></li>
+                            
+                            
+                            
+                                <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                            
+                            
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/"><h2>YongKJ</h2><br><span>勇往直前，永不言弃</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                    <div class="row">
+                        
+        <div id="main">
+            <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                <h1 class="kratos-entry-title text-center">线程</h1>
+                
+                <div class="kratos-post-meta text-center">
+                    <span>
+                        <i class="fa fa-calendar"></i> 2021-01-30
+                        <i class="fa fa-folder"></i> 分类于 <a class="label-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a>
+                        <i class="fa fa-user"></i> 作者 yongkj
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~5.94K
+                        
+                        字
+                        
+                    </span>
+                </div>
+            </header>
+            <div class="kratos-post-content">
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">进程与线程的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%8A%B6%E6%80%81"><span class="toc-number">2.</span> <span class="toc-text">线程的基本状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">线程创建方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">4.</span> <span class="toc-text">线程同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E5%92%8Csynchronized%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">volatile和synchronized的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronized%E4%B8%8Elock%E7%9A%84%E5%BC%82%E5%90%8C"><span class="toc-number">6.</span> <span class="toc-text">synchronized与lock的异同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-%E5%92%8C-yield-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">sleep() 和 yield() 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-%E5%92%8C-wait-%E6%9C%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">sleep() 和 wait() 有的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">9.</span> <span class="toc-text">线程池</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="进程与线程的关系"><a href="#进程与线程的关系" class="headerlink" title="进程与线程的关系"></a>进程与线程的关系</h3><ol>
+<li>进程是操作系统资源分配的基本单位</li>
+<li>线程是cpu调度和分配的基本单位</li>
+<li>一个进程可以有多个线程</li>
+<li>进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率</li>
+<li>线程的划分尺度小于进程，使得多线程程序的并发性高</li>
+</ol>
+<h3 id="线程的基本状态"><a href="#线程的基本状态" class="headerlink" title="线程的基本状态"></a>线程的基本状态</h3><ol>
+<li><strong>新建状态（New）</strong>：当线程对象对创建后，即进入了新建状态，如：Thread t = new MyThread();</li>
+<li><strong>就绪状态（Runnable）</strong>：当调用线程对象的start()方法（t.start();），线程即进入就绪状态。处于就绪状态的线程，只是说明此线程已经做好了准备，随时等待CPU调度执行，并不是说执行了t.start()此线程立即就会执行；</li>
+<li><strong>运行状态（Running）</strong>：当CPU开始调度处于就绪状态的线程时，此时线程才得以真正执行，即进入到运行状态。注：就绪状态是进入到运行状态的唯一入口，也就是说，线程要想进入运行状态执行，首先必须处于就绪状态中；</li>
+<li><strong>阻塞状态（Blocked）</strong>：处于运行状态中的线程由于某种原因，暂时放弃对CPU的使用权，停止执行，此时进入阻塞状态，直到其进入到就绪状态，才 有机会再次被CPU调用以进入到运行状态。根据阻塞产生的原因不同，阻塞状态又可以分为三种：</li>
+</ol>
+<ul>
+<li>等待阻塞：运行状态中的线程执行wait()方法，使本线程进入到等待阻塞状态；</li>
+<li>同步阻塞 – 线程在获取synchronized同步锁失败(因为锁被其它线程所占用)，它会进入同步阻塞状态；</li>
+<li>其他阻塞 – 通过调用线程的sleep()或join()或发出了I/O请求时，线程会进入到阻塞状态。当sleep()状态超时、join()等待线程终止或者超时、或者I/O处理完毕时，线程重新转入就绪状态。</li>
+</ul>
+<ol start="5">
+<li><strong>死亡状态（Dead）</strong>：线程执行完了或者因异常退出了run()方法，该线程结束生命周期。</li>
+</ol>
+<h3 id="线程创建方式"><a href="#线程创建方式" class="headerlink" title="线程创建方式"></a>线程创建方式</h3><ol>
+<li><strong>继承Thread类</strong></li>
+</ol>
+<p>​      1）创建一个线程子类继承Thread类</p>
+<p>​      2）重写run() 方法，把需要线程执行的程序放入run方法，线程启动后方法里的程序就会运行</p>
+<p>​      3）创建该类的实例，并调用对象的start()方法启动线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadDemo</span> <span class="keyword">extends</span> <span class="title">Thread</span> </span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">super</span>.run();</span><br><span class="line">        System.out.println(<span class="string">&quot;需要运行的程序。。。。。。。。&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Thread thread = <span class="keyword">new</span> ThreadDemo();</span><br><span class="line">        thread.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li><strong>实现Runnable接口</strong></li>
+</ol>
+<p>​      1）定义一个线程类实现Runnable接口，并重写该接口的run()方法，方法中依然是包含指定执行的程序</p>
+<p>​      2）创建一个Runnable实现类实例，将其作为target参数传入，并创建Thread类实例</p>
+<p>​      3）调用Thread类实例的start()方法启动线程</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RunnableDemo</span> <span class="keyword">implements</span> <span class="title">Runnable</span></span>&#123;</span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;我是Runnable接口......&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        RunnableDemo demo = <span class="keyword">new</span> RunnableDemo();</span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread(demo);</span><br><span class="line">        thread.start();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li><strong>使用Callable和Future创建线程</strong> </li>
+</ol>
+<p>​      1）创建Callable接口的实现类，实现call() 方法</p>
+<p>​      2）创建Callable实现类实例，通过FutureTask类来包装Callable对象，该对象封装了Callable对象的call()方法的返回值</p>
+<p>​      3）将创建的FutureTask对象作为target参数传入，创建Thread线程实例并启动新线程</p>
+<p>​      4）调用FutureTask对象的get方法获取返回值。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ThreadUtil</span> <span class="keyword">implements</span> <span class="title">Callable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> StudentService studentService;</span><br><span class="line">    </span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">ThreadUtil</span><span class="params">(StudentService studentService)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.studentService = studentService;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> List&lt;Student&gt; <span class="title">call</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        List&lt;Student&gt; students = studentService.allStudentsList();</span><br><span class="line">        <span class="keyword">return</span> students;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ThreadTest</span> </span>&#123;</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">private</span> StudentService studentService = <span class="keyword">new</span> StudentService();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">testThread1</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="comment">// 1.获取FutureTask对象</span></span><br><span class="line">        ThreadUtil threadUtil = <span class="keyword">new</span> ThreadUtil(studentService);</span><br><span class="line">        FutureTask futureTask = <span class="keyword">new</span> FutureTask(threadUtil);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// 2.开启线程</span></span><br><span class="line">        <span class="keyword">new</span> Thread(futureTask).start();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">           <span class="comment">// 3.使用Futura#get()方法获取线程的返回值</span></span><br><span class="line">            List&lt;Student&gt; studentList = (List&lt;Student&gt;) futureTask.get();</span><br><span class="line">            studentList.forEach(student -&gt; System.out.println(student));</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (ExecutionException e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="线程同步"><a href="#线程同步" class="headerlink" title="线程同步"></a>线程同步</h3><ol>
+<li>wait()：使一个线程处于等待状态，并且释放所持有的对象的lock。</li>
+<li>sleep()：使一个正在运行的线程处于睡眠状态，是一个静态方法，调用此方法要捕捉InterruptedException异常。</li>
+<li>notify()：唤醒一个处于等待状态的线程，注意的是在调用此方法的时候，并不能确切的唤醒某一个等待状态的线程，而是由JVM确定唤醒哪个线程，而且不是按优先级。</li>
+<li>notifyAll()：唤醒所有处入等待状态的线程，注意并不是给所有唤醒线程一个对象的锁，而是让它们竞争。</li>
+<li>yield()：暂停当前线程，以便其他线程有机会执行，不过不能指定暂停的时间，并且也不能保证当前线程马上停止。yield方法只是将Running状态转变为Runnable状态。</li>
+<li>join()：父线程等待子线程执行完成后再执行，换句话说就是将异步执行的线程合并为同步的线程。</li>
+<li>synchronized：Java中的关键字，是一种同步锁。用来修饰一个方法或者一个代码块的时候，能够保证在同一时刻最多只有一个线程执行该段代码。</li>
+<li>volatile：保证了变量的可见性（visibility）。被volatile关键字修饰的变量，如果值发生了变更，其他线程立马可见，避免出现脏读的现象</li>
+<li>lock：加锁限定线程间的互斥，保持线程同步实现线程安全</li>
+</ol>
+<blockquote>
+<p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/paddix/p/5381958.html">Java 并发编程：线程间的协作(wait/notify/sleep/yield/join)</a></p>
+</blockquote>
+<h3 id="volatile和synchronized的区别"><a href="#volatile和synchronized的区别" class="headerlink" title="volatile和synchronized的区别"></a>volatile和synchronized的区别</h3><ol>
+<li><p>volatile本质是在告诉jvm当前变量在寄存器中的值是不确定的，需要从主存中读取,synchronized则是锁定当前变量，只有当前线程可以访问该变量,其他线程被阻塞住</p>
+</li>
+<li><p>volatile仅能使用在变量级别，synchronized则可以使用在变量、方法</p>
+</li>
+<li><p>volatile仅能实现变量的修改可见性，而synchronized则可以保证变量的修改可见性和原子性</p>
+</li>
+<li><p>volatile不会造成线程的阻塞，而synchronized可能会造成线程的阻塞</p>
+</li>
+<li><p>当一个域的值依赖于它之前的值时，volatile就无法工作了，如n=n+1,n++等。如果某个域的值受到其他域的值的限制，那么volatile也无法工作，如Range类的lower和upper边界，必须遵循lower&lt;=upper的限制。</p>
+</li>
+<li><p>使用volatile而不是synchronized的唯一安全的情况是类中只有一个可变的域。</p>
+</li>
+</ol>
+<h3 id="synchronized与lock的异同"><a href="#synchronized与lock的异同" class="headerlink" title="synchronized与lock的异同"></a>synchronized与lock的异同</h3><ol>
+<li>Lock能完成synchronized所实现的所有功能</li>
+<li>Lock有比synchronized更精确的线程语义和更好的性能。synchronized会自动释放锁，而Lock一定要求程序员手工释放，并且必须在finally从句中释放，否则会引起死锁。</li>
+<li>synchronized既可以加在方法上，也可以加载特定代码块上，而lock需要显示地指定起始位置和终止位置。</li>
+<li>synchronized是托管给JVM执行的，lock的锁定是通过代码实现的，它有比synchronized更精确的线程语义。</li>
+<li>lock接口的实现类ReentrantLock，不仅具有和synchronized相同的并发性和内存语义，还多了超时的获取锁、定时锁、等候和中断锁等。</li>
+<li>在竞争不是很激烈的情况下，synchronized的性能优于ReentrantLock，竞争激烈的情况下synchronized的性能会下降的非常快，而ReentrantLock则基本不变。</li>
+</ol>
+<h3 id="sleep-和-yield-的区别"><a href="#sleep-和-yield-的区别" class="headerlink" title="sleep() 和 yield() 的区别"></a>sleep() 和 yield() 的区别</h3><ol>
+<li>sleep()方法给其他线程运行机会时不考虑线程的优先级，因此会给低优先级的线程以运行的机会；yield()方法只会给相同优先级或更高优先级的线程以运行的机会；</li>
+<li>线程执行sleep()方法后转入阻塞（blocked）状态，而执行yield()方法后转入就绪（ready）状态；</li>
+<li>sleep()方法声明抛出InterruptedException，而yield()方法没有声明任何异常；</li>
+<li>sleep()方法比yield()方法（跟操作系统CPU调度相关）具有更好的可移植性。</li>
+</ol>
+<h3 id="sleep-和-wait-有的区别"><a href="#sleep-和-wait-有的区别" class="headerlink" title="sleep() 和 wait() 有的区别"></a>sleep() 和 wait() 有的区别</h3><ol>
+<li>sleep是线程类（Thread）的方法，导致此线程暂停执行指定时间，把执行机会给其他线程，但是监控状态依然保持，到时后会自动恢复。调用sleep不会释放对象锁。</li>
+<li>wait是Object类的方法，对此对象调用wait方法导致本线程放弃对象锁，进入等待此对象的等待锁定池，只有针对此对象发出notify方法（或notifyAll）后本线程才进入对象锁定池准备获得对象锁进入运行状态。</li>
+</ol>
+<h3 id="线程池"><a href="#线程池" class="headerlink" title="线程池"></a>线程池</h3><ol>
+<li>定义</li>
+</ol>
+<p>​      1）线程池顾名思义就是事先创建若干个可执行的线程放入一个池（容器）中，需要的时候从池中获取线程不用自行创建，使用完毕不需要销毁线程而是放回池中，从而减少创建和销毁线程对象的开销。</p>
+<ol start="2">
+<li>优点</li>
+</ol>
+<p>​      1）降低资源消耗。通过重复利用已创建的线程降低线程创建和销毁造成的消耗。</p>
+<p>​      2）提高响应速度。当任务到达时，任务可以不需要等到线程创建就能执行。</p>
+<p>​      3）提高线程的可管理性，线程是稀缺资源，如果无限制地创建，不仅会消耗系统资源，还会降低系统的稳定性，使用线程池可以进行统一分配、调优和监控。</p>
+<ol start="3">
+<li>分类</li>
+</ol>
+<p>​      1）<strong>newSingleThreadExecutor</strong>：创建一个单线程化的线程池，它只会用唯一的工作线程来执行任务，保证所有任务按照指定顺序(FIFO, LIFO, 优先级)执行。</p>
+<p>​      2）<strong>newFixedThreadPool</strong>：创建一个定长线程池，可控制线程最大并发数，超出的线程会在队列中等待。</p>
+<p>​      3）<strong>newScheduledThreadPool</strong>：创建一个可定期或者延时执行任务的定长线程池，支持定时及周期性任务执行。 </p>
+<p>​      4）<strong>newCachedThreadPool</strong>：创建一个可缓存线程池，如果线程池长度超过处理需要，可灵活回收空闲线程，若无可回收，则新建线程。 </p>
+<ol start="4">
+<li>状态</li>
+</ol>
+<p>​      1）<strong>Running</strong>：能接受新任务以及处理已添加的任务</p>
+<p>​      2）<strong>Shutdown</strong>：不接受新任务，可以处理已添加的任务</p>
+<p>​      3）<strong>Stop</strong>：不接受新任务，不处理已添加的任务，并且中断正在处理的任务</p>
+<p>​      4）<strong>Tidying</strong>：所有任务已终止，ctl记录为”任务数量”为0，ctl负责记录线程池的运行状态与活动线程数量</p>
+<p>​      5）<strong>Terminated</strong>：线程池彻底终止</p>
+
+            </div>
+            
+                <div class="kratos-copyright text-center clearfix">
+                    <h5>本作品采用 <a rel="license nofollow" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                    <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                    
+                    
+                        <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                        <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://blog.yongkj.cn/2021/01/30/java-thread/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://blog.yongkj.cn/2021/01/30/java-thread/";
+            const title         = "「线程」";
+            const excerpt       = `进程与线程的关系
+进程是操作系统资源分配的基本单位
+线程是cpu调度和分配的基本单位
+一个进程可以有多个线程
+进程在执行过程中拥有独立的内存单元，而多个线程共享内存，从而极大地提高了程序的运行效率
+线程的划分尺度小于进程，使得多线程程...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                    
+                    </div>
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/%E5%88%86%E9%85%8D/" rel="tag">分配</a>, <a class="tag-none-link" href="/tags/%E5%88%9B%E5%BB%BA/" rel="tag">创建</a>, <a class="tag-none-link" href="/tags/%E7%8A%B6%E6%80%81/" rel="tag">状态</a>, <a class="tag-none-link" href="/tags/%E9%98%BB%E5%A1%9E/" rel="tag">阻塞</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-02-10</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" 集合" href="/2021/01/29/java-assemble/">&lt; 上一篇</a>
+                </div>
+                
+                
+                <div class="nav-next clearfix">
+                    <a title=" 数据库" href="/2021/01/31/java-database/">下一篇 &gt;</a>
+                </div>
+                
+            </nav>
+        
+        
+    </article>
+</section>
+        </div>
+                
+            <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+                
+                    <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%BF%9B%E7%A8%8B%E4%B8%8E%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="toc-number">1.</span> <span class="toc-text">进程与线程的关系</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E7%9A%84%E5%9F%BA%E6%9C%AC%E7%8A%B6%E6%80%81"><span class="toc-number">2.</span> <span class="toc-text">线程的基本状态</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%88%9B%E5%BB%BA%E6%96%B9%E5%BC%8F"><span class="toc-number">3.</span> <span class="toc-text">线程创建方式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E5%90%8C%E6%AD%A5"><span class="toc-number">4.</span> <span class="toc-text">线程同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#volatile%E5%92%8Csynchronized%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">5.</span> <span class="toc-text">volatile和synchronized的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#synchronized%E4%B8%8Elock%E7%9A%84%E5%BC%82%E5%90%8C"><span class="toc-number">6.</span> <span class="toc-text">synchronized与lock的异同</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-%E5%92%8C-yield-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">sleep() 和 yield() 的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#sleep-%E5%92%8C-wait-%E6%9C%89%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">sleep() 和 wait() 有的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="toc-number">9.</span> <span class="toc-text">线程池</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+                    <!-- Moved to about.ejs -->
+                
+                    
+  <aside id="krw-categories" class="widget widget-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%80%E6%AC%A1/">第一次</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E4%B9%90%E7%A9%BA%E9%97%B4/">音乐空间</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86/">项目经历</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+                
+                    
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/apility/" style="font-size: 0.6em;">apility</a> <a href="/tags/bus/" style="font-size: 0.6em;">bus</a> <a href="/tags/city/" style="font-size: 0.6em;">city</a> <a href="/tags/comfort/" style="font-size: 0.6em;">comfort</a> <a href="/tags/communication/" style="font-size: 0.6em;">communication</a> <a href="/tags/contribute/" style="font-size: 0.6em;">contribute</a> <a href="/tags/convenient/" style="font-size: 0.6em;">convenient</a> <a href="/tags/develop/" style="font-size: 0.6em;">develop</a> <a href="/tags/education/" style="font-size: 0.6em;">education</a> <a href="/tags/enhance/" style="font-size: 0.6em;">enhance</a> <a href="/tags/facility/" style="font-size: 0.6em;">facility</a> <a href="/tags/flight/" style="font-size: 0.6em;">flight</a> <a href="/tags/foreign/" style="font-size: 0.6em;">foreign</a> <a href="/tags/free/" style="font-size: 0.6em;">free</a> <a href="/tags/hello/" style="font-size: 0.6em;">hello</a> <a href="/tags/improve/" style="font-size: 0.8em;">improve</a> <a href="/tags/information/" style="font-size: 0.6em;">information</a> <a href="/tags/invest/" style="font-size: 0.6em;">invest</a>
+      </div>
+  </aside>
+
+                
+                    
+  <aside id="krw-posts" class="widget widget-kratos-poststab">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/09/java-io-stream/"><i class="fa  fa-book"></i> 输入输出流</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/08/java-class-loading/"><i class="fa  fa-book"></i> 类加载</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/07/java-annotation/"><i class="fa  fa-book"></i> 注解</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/06/java-reflect/"><i class="fa  fa-book"></i> 反射</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/05/java-framework-annotations/"><i class="fa  fa-book"></i> 框架注解</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+                
+            </section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer">
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://twitter.com/Candiinya"><i class="fa fa-twitter"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/yongkj"><i class="fa fa-github"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 yongkj 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Made with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by <a href="https://candinya.com" target="_blank" rel="nofollow">Candinya</a>.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://www.yongkj.cn" target="_blank">勇往直前</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+<script async src="/js/candy.min.js"></script>
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+    </body>
+</html>

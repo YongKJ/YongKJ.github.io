@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/favicon.ico">
+  <title>注解 | YongKJ</title>
+  <meta name="author" content="yongkj" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    
+      <meta name="description" itemprop="description" content="Pursue excellence and success will follow." />
+    
+  
+  <meta name="description" content="注解的概念 注解（Annotation），也叫元数据（Metadata），是Java5的新特性，JDK5引入了Metadata很容易的就能够调用Annotations。注解与类、接口、枚举在同一个层次，并可以应用于包、类型、构造方法、方法、成员变量、参数、本地变量的声明中，用来对这些元素进行说明注释。  注解的语法与定义形式 以@interface关键字定义 注解包含成员，成员以无参数的方法的形式">
+<meta property="og:type" content="article">
+<meta property="og:title" content="注解">
+<meta property="og:url" content="https://blog.yongkj.cn/2021/02/07/java-annotation/index.html">
+<meta property="og:site_name" content="YongKJ">
+<meta property="og:description" content="注解的概念 注解（Annotation），也叫元数据（Metadata），是Java5的新特性，JDK5引入了Metadata很容易的就能够调用Annotations。注解与类、接口、枚举在同一个层次，并可以应用于包、类型、构造方法、方法、成员变量、参数、本地变量的声明中，用来对这些元素进行说明注释。  注解的语法与定义形式 以@interface关键字定义 注解包含成员，成员以无参数的方法的形式">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.yongkj.cn/2021/02/07/java-annotation/3_slavcostojanoski-sunsetlakeohridmacedonia.jpg">
+<meta property="article:published_time" content="2021-02-07T13:00:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:01:06.000Z">
+<meta property="article:author" content="yongkj">
+<meta property="article:tag" content="参数">
+<meta property="article:tag" content="类型">
+<meta property="article:tag" content="周期">
+<meta property="article:tag" content="继承">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.yongkj.cn/2021/02/07/java-annotation/3_slavcostojanoski-sunsetlakeohridmacedonia.jpg">
+<meta name="twitter:site" content="@Candiinya">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="highlight-css" href="/css/highlight.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <div class="nav-toggle"><a class="kratos-nav-toggle js-kratos-nav-toggle"><i></i></a></div>
+            <header id="kratos-header-section">
+                <div class="container">
+                    <div class="nav-header">
+                        <div class="color-logo"><a href="/">YongKJ</a></div>
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                            
+                            
+                                <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                            
+                            
+                            
+                                <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                            
+                            
+                            
+                                <li>
+                                <a><i class="fa fa-link"></i>链接</a>
+                                <ul class="sub-menu">
+                                    
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://software.yongkj.cn/software/">软件俱乐部</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://pocketyun.yongkj.cn/pocketyun/">袖珍网盘吧</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://study.yongkj.cn/">英语随身学</a></li>
+                                    
+                                    
+                                </ul>
+                                </li>
+                            
+                            
+                            
+                                <li><a href="/atom.xml"><i class="fa fa-rss"></i>RSS 订阅</a></li>
+                            
+                            
+                            
+                                <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                            
+                            
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/"><h2>YongKJ</h2><br><span>勇往直前，永不言弃</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                    <div class="row">
+                        
+        <div id="main">
+            <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                <h1 class="kratos-entry-title text-center">注解</h1>
+                
+                <div class="kratos-post-meta text-center">
+                    <span>
+                        <i class="fa fa-calendar"></i> 2021-02-07
+                        <i class="fa fa-folder"></i> 分类于 <a class="label-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a>
+                        <i class="fa fa-user"></i> 作者 yongkj
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~4.79K
+                        
+                        字
+                        
+                    </span>
+                </div>
+            </header>
+            <div class="kratos-post-content">
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">注解的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%AE%9A%E4%B9%89%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">注解的语法与定义形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">注解的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%B3%A8%E8%A7%A3"><span class="toc-number">4.</span> <span class="toc-text">元注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84API%E8%AF%BB%E5%8F%96%E6%B3%A8%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">使用反射API读取注解</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="注解的概念"><a href="#注解的概念" class="headerlink" title="注解的概念"></a>注解的概念</h3><ol>
+<li>注解（Annotation），也叫元数据（Metadata），是Java5的新特性，JDK5引入了Metadata很容易的就能够调用Annotations。注解与类、接口、枚举在同一个层次，并可以应用于包、类型、构造方法、方法、成员变量、参数、本地变量的声明中，用来对这些元素进行说明注释。</li>
+</ol>
+<h3 id="注解的语法与定义形式"><a href="#注解的语法与定义形式" class="headerlink" title="注解的语法与定义形式"></a>注解的语法与定义形式</h3><ol>
+<li>以@interface关键字定义</li>
+<li>注解包含成员，成员以无参数的方法的形式被声明。其方法名和返回值定义了该成员的名字和类型。</li>
+<li>成员赋值是通过@Annotation(name=value)的形式。</li>
+<li>注解需要标明注解的生命周期，注解的修饰目标等信息，这些信息是通过元注解实现。</li>
+</ol>
+<blockquote>
+<p>以 <strong>java.lang.annotation</strong> 中定义的 <strong>Target</strong> 注解来说明：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(value = RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(value = &#123; ElementType.ANNOTATION_TYPE &#125; )</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Target &#123;</span><br><span class="line">    ElementType[] value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>源码分析如下：<br>第一：元注解@Retention，成员value的值为RetentionPolicy.RUNTIME。<br>第二：元注解@Target，成员value是个数组，用{}形式赋值，值为ElementType.ANNOTATION_TYPE<br>第三：成员名称为value，类型为ElementType[]<br>另外，需要注意一下，如果成员名称是value，在赋值过程中可以简写。如果成员类型为数组，但是只赋值一个元素，则也可以简写。如上面的简写形式为：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.ANNOTATION_TYPE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Target &#123;</span><br><span class="line">    ElementType[] value();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="注解的分类"><a href="#注解的分类" class="headerlink" title="注解的分类"></a>注解的分类</h3><blockquote>
+<p>注解的分类有两种分法：</p>
+</blockquote>
+<ol>
+<li>第一种分法</li>
+</ol>
+<p>​      1）基本内置注解，是指Java自带的几个Annotation，如@Override、Deprecated、@SuppressWarnings等；</p>
+<p>​      2）元注解（meta-annotation），是指负责注解其他注解的注解，JDK 1.5及以后版本定义了4个标准的元注解类型，如下：</p>
+<ul>
+<li>@Target</li>
+<li>@Retention</li>
+<li>@Documented</li>
+<li>@Inherited</li>
+</ul>
+<p>​      3）自定义注解，根据需要可以自定义注解，自定义注解需要用到上面的meta-annotation</p>
+<ol start="2">
+<li>第二种分法，根据作用域分类</li>
+</ol>
+<p>​      1）源码时注解（RetentionPolicy.SOURCE）<br>​      2）编译时注解（RetentionPolicy.CLASS）<br>​      3）运行时注解（RetentionPolicy.RUNTIME）</p>
+<blockquote>
+<p>注解需要标明注解的生命周期，这些信息是通过元注解 <strong>@Retention</strong> 实现，注解的值是 <strong>enum</strong> 类型的 <strong>RetentionPolicy</strong>，包括以下几种情况：</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">RetentionPolicy</span> </span>&#123;</span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注解只保留在源文件，当Java文件编译成class文件的时候，注解被遗弃.</span></span><br><span class="line"><span class="comment">     * 这意味着：Annotation仅存在于编译器处理期间，编译器处理完之后，该Annotation就没用了</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    SOURCE,</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注解被保留到class文件，但jvm加载class文件时候被遗弃，这是默认的生命周期.</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    CLASS,</span><br><span class="line"> </span><br><span class="line">    <span class="comment">/**</span></span><br><span class="line"><span class="comment">     * 注解不仅被保存到class文件中，jvm加载class文件之后，仍然存在，</span></span><br><span class="line"><span class="comment">     * 保存到class对象中，可以通过反射来获取</span></span><br><span class="line"><span class="comment">     */</span></span><br><span class="line">    RUNTIME</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="元注解"><a href="#元注解" class="headerlink" title="元注解"></a>元注解</h3><blockquote>
+<p>如上所介绍的Java定义了4个标准的元注解：</p>
+</blockquote>
+<ol>
+<li>@Documented：标记注解，用于描述其它类型的注解应该被作为被标注的程序成员的公共API，因此可以被例如javadoc此类的工具文档化。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.ANNOTATION_TYPE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Documented &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>@Inherited：标记注解，允许子类继承父类的注解</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.ANNOTATION_TYPE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Inherited &#123;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>@Retention：指Annotation被保留的时间长短，标明注解的生命周期，3种<strong>RetentionPolicy</strong>取值含义上面以说明</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.ANNOTATION_TYPE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Retention &#123;</span><br><span class="line">    <span class="function">RetentionPolicy <span class="title">value</span><span class="params">()</span></span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>@Target：标明注解的修饰目标，共有</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Documented</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="meta">@Target(ElementType.ANNOTATION_TYPE)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> Target &#123;</span><br><span class="line">    ElementType[] value();</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="comment">// ElementType取值</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">enum</span> <span class="title">ElementType</span> </span>&#123;</span><br><span class="line">    <span class="comment">/** 类、接口（包括注解类型）或枚举 */</span></span><br><span class="line">    TYPE,</span><br><span class="line">    <span class="comment">/** field属性，也包括enum常量使用的注解 */</span></span><br><span class="line">    FIELD,</span><br><span class="line">    <span class="comment">/** 方法 */</span></span><br><span class="line">    METHOD,</span><br><span class="line">    <span class="comment">/** 参数 */</span></span><br><span class="line">    PARAMETER,</span><br><span class="line">    <span class="comment">/** 构造函数 */</span></span><br><span class="line">    CONSTRUCTOR,</span><br><span class="line">    <span class="comment">/** 局部变量 */</span></span><br><span class="line">    LOCAL_VARIABLE,</span><br><span class="line">    <span class="comment">/** 注解上使用的元注解 */</span></span><br><span class="line">    ANNOTATION_TYPE,</span><br><span class="line">    <span class="comment">/** 包 */</span></span><br><span class="line">    PACKAGE</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用反射API读取注解"><a href="#使用反射API读取注解" class="headerlink" title="使用反射API读取注解"></a>使用反射API读取注解</h3><ol>
+<li>MyAnno自定义注解类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Target(&#123;ElementType.TYPE,ElementType.FIELD&#125;)</span></span><br><span class="line"><span class="meta">@Retention(RetentionPolicy.RUNTIME)</span></span><br><span class="line"><span class="keyword">public</span> <span class="meta">@interface</span> MyAnno&#123;</span><br><span class="line">    <span class="function">String <span class="title">value</span><span class="params">()</span> <span class="keyword">default</span> &quot;猿同学&quot;</span>;</span><br><span class="line">    <span class="function">String <span class="title">name</span><span class="params">()</span> <span class="keyword">default</span> &quot;猿同学&quot;</span>;</span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">id</span><span class="params">()</span> <span class="keyword">default</span> -1</span>;<span class="comment">//用户不存在</span></span><br><span class="line">    <span class="function"><span class="keyword">int</span> <span class="title">age</span><span class="params">()</span> <span class="keyword">default</span> 18</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="2">
+<li>POJO类</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@MyAnno(&quot;java&quot;)</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">User</span> </span>&#123;</span><br><span class="line">    <span class="meta">@MyAnno(id=20)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> id;</span><br><span class="line">    <span class="meta">@MyAnno(name=&quot;java&quot;)</span></span><br><span class="line">    <span class="keyword">private</span> String name;</span><br><span class="line">    <span class="meta">@MyAnno(age=20)</span></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">int</span> age;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="title">User</span><span class="params">(<span class="keyword">int</span> id, String name, <span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getId</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setId</span><span class="params">(<span class="keyword">int</span> id)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.id = id;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">getName</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setName</span><span class="params">(String name)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.name = name;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getAge</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setAge</span><span class="params">(<span class="keyword">int</span> age)</span> </span>&#123;</span><br><span class="line">        <span class="keyword">this</span>.age = age;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@Override</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> String <span class="title">toString</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;User&#123;&quot;</span> +</span><br><span class="line">                <span class="string">&quot;id=&quot;</span> + id +</span><br><span class="line">                <span class="string">&quot;, name=&#x27;&quot;</span> + name + <span class="string">&#x27;\&#x27;&#x27;</span> +</span><br><span class="line">                <span class="string">&quot;, age=&quot;</span> + age +</span><br><span class="line">                <span class="string">&#x27;&#125;&#x27;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol start="3">
+<li>利用反射读取注解</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestAnnoReflat</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class cls = Class.forName(<span class="string">&quot;com.sc.domain.User&quot;</span>);</span><br><span class="line">        MyAnno annotation = (MyAnno) cls.getDeclaredAnnotation(MyAnno.class);</span><br><span class="line">        System.out.println(annotation.value());</span><br><span class="line"></span><br><span class="line">        MyAnno name = cls.getDeclaredField(<span class="string">&quot;name&quot;</span>).getAnnotation(MyAnno.class);</span><br><span class="line">        System.out.println(name.name());</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+            </div>
+            
+                <div class="kratos-copyright text-center clearfix">
+                    <h5>本作品采用 <a rel="license nofollow" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                    <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                    
+                    
+                        <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                        <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://blog.yongkj.cn/2021/02/07/java-annotation/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://blog.yongkj.cn/2021/02/07/java-annotation/";
+            const title         = "「注解」";
+            const excerpt       = `注解的概念
+注解（Annotation），也叫元数据（Metadata），是Java5的新特性，JDK5引入了Metadata很容易的就能够调用Annotations。注解与类、接口、枚举在同一个层次，并可以应用于包、类型、构造方法、...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                    
+                    </div>
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/%E5%8F%82%E6%95%B0/" rel="tag">参数</a>, <a class="tag-none-link" href="/tags/%E5%91%A8%E6%9C%9F/" rel="tag">周期</a>, <a class="tag-none-link" href="/tags/%E7%B1%BB%E5%9E%8B/" rel="tag">类型</a>, <a class="tag-none-link" href="/tags/%E7%BB%A7%E6%89%BF/" rel="tag">继承</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-02-10</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" 反射" href="/2021/02/06/java-reflect/">&lt; 上一篇</a>
+                </div>
+                
+                
+                <div class="nav-next clearfix">
+                    <a title=" 类加载" href="/2021/02/08/java-class-loading/">下一篇 &gt;</a>
+                </div>
+                
+            </nav>
+        
+        
+    </article>
+</section>
+        </div>
+                
+            <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+                
+                    <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">注解的概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E8%AF%AD%E6%B3%95%E4%B8%8E%E5%AE%9A%E4%B9%89%E5%BD%A2%E5%BC%8F"><span class="toc-number">2.</span> <span class="toc-text">注解的语法与定义形式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%B3%A8%E8%A7%A3%E7%9A%84%E5%88%86%E7%B1%BB"><span class="toc-number">3.</span> <span class="toc-text">注解的分类</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%83%E6%B3%A8%E8%A7%A3"><span class="toc-number">4.</span> <span class="toc-text">元注解</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84API%E8%AF%BB%E5%8F%96%E6%B3%A8%E8%A7%A3"><span class="toc-number">5.</span> <span class="toc-text">使用反射API读取注解</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+                    <!-- Moved to about.ejs -->
+                
+                    
+  <aside id="krw-categories" class="widget widget-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%80%E6%AC%A1/">第一次</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E4%B9%90%E7%A9%BA%E9%97%B4/">音乐空间</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86/">项目经历</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+                
+                    
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/apility/" style="font-size: 0.6em;">apility</a> <a href="/tags/bus/" style="font-size: 0.6em;">bus</a> <a href="/tags/city/" style="font-size: 0.6em;">city</a> <a href="/tags/comfort/" style="font-size: 0.6em;">comfort</a> <a href="/tags/communication/" style="font-size: 0.6em;">communication</a> <a href="/tags/contribute/" style="font-size: 0.6em;">contribute</a> <a href="/tags/convenient/" style="font-size: 0.6em;">convenient</a> <a href="/tags/develop/" style="font-size: 0.6em;">develop</a> <a href="/tags/education/" style="font-size: 0.6em;">education</a> <a href="/tags/enhance/" style="font-size: 0.6em;">enhance</a> <a href="/tags/facility/" style="font-size: 0.6em;">facility</a> <a href="/tags/flight/" style="font-size: 0.6em;">flight</a> <a href="/tags/foreign/" style="font-size: 0.6em;">foreign</a> <a href="/tags/free/" style="font-size: 0.6em;">free</a> <a href="/tags/hello/" style="font-size: 0.6em;">hello</a> <a href="/tags/improve/" style="font-size: 0.8em;">improve</a> <a href="/tags/information/" style="font-size: 0.6em;">information</a> <a href="/tags/invest/" style="font-size: 0.6em;">invest</a>
+      </div>
+  </aside>
+
+                
+                    
+  <aside id="krw-posts" class="widget widget-kratos-poststab">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/09/java-io-stream/"><i class="fa  fa-book"></i> 输入输出流</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/08/java-class-loading/"><i class="fa  fa-book"></i> 类加载</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/07/java-annotation/"><i class="fa  fa-book"></i> 注解</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/06/java-reflect/"><i class="fa  fa-book"></i> 反射</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/05/java-framework-annotations/"><i class="fa  fa-book"></i> 框架注解</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+                
+            </section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer">
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://twitter.com/Candiinya"><i class="fa fa-twitter"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/yongkj"><i class="fa fa-github"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 yongkj 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Made with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by <a href="https://candinya.com" target="_blank" rel="nofollow">Candinya</a>.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://www.yongkj.cn" target="_blank">勇往直前</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+<script async src="/js/candy.min.js"></script>
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+    </body>
+</html>

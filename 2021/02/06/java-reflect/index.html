@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/favicon.ico">
+  <title>反射 | YongKJ</title>
+  <meta name="author" content="yongkj" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    
+      <meta name="description" itemprop="description" content="Pursue excellence and success will follow." />
+    
+  
+  <meta name="description" content="什么叫java反射 Java反射是Java被视为动态（或准动态）语言的一个关键性质。  这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并">
+<meta property="og:type" content="article">
+<meta property="og:title" content="反射">
+<meta property="og:url" content="https://blog.yongkj.cn/2021/02/06/java-reflect/index.html">
+<meta property="og:site_name" content="YongKJ">
+<meta property="og:description" content="什么叫java反射 Java反射是Java被视为动态（或准动态）语言的一个关键性质。  这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.yongkj.cn/2021/02/06/java-reflect/1_slavcostojanoski-aftersunsetlakeohridmacedonia.jpg">
+<meta property="article:published_time" content="2021-02-06T12:58:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:21:52.000Z">
+<meta property="article:author" content="yongkj">
+<meta property="article:tag" content="实例">
+<meta property="article:tag" content="动态">
+<meta property="article:tag" content="构造">
+<meta property="article:tag" content="获取">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.yongkj.cn/2021/02/06/java-reflect/1_slavcostojanoski-aftersunsetlakeohridmacedonia.jpg">
+<meta name="twitter:site" content="@Candiinya">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="highlight-css" href="/css/highlight.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <div class="nav-toggle"><a class="kratos-nav-toggle js-kratos-nav-toggle"><i></i></a></div>
+            <header id="kratos-header-section">
+                <div class="container">
+                    <div class="nav-header">
+                        <div class="color-logo"><a href="/">YongKJ</a></div>
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                            
+                            
+                                <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                            
+                            
+                            
+                                <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                            
+                            
+                            
+                                <li>
+                                <a><i class="fa fa-link"></i>链接</a>
+                                <ul class="sub-menu">
+                                    
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://software.yongkj.cn/software/">软件俱乐部</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://pocketyun.yongkj.cn/pocketyun/">袖珍网盘吧</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://study.yongkj.cn/">英语随身学</a></li>
+                                    
+                                    
+                                </ul>
+                                </li>
+                            
+                            
+                            
+                                <li><a href="/atom.xml"><i class="fa fa-rss"></i>RSS 订阅</a></li>
+                            
+                            
+                            
+                                <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                            
+                            
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/"><h2>YongKJ</h2><br><span>勇往直前，永不言弃</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                    <div class="row">
+                        
+        <div id="main">
+            <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                <h1 class="kratos-entry-title text-center">反射</h1>
+                
+                <div class="kratos-post-meta text-center">
+                    <span>
+                        <i class="fa fa-calendar"></i> 2021-02-06
+                        <i class="fa fa-folder"></i> 分类于 <a class="label-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a>
+                        <i class="fa fa-user"></i> 作者 yongkj
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~9.26K
+                        
+                        字
+                        
+                    </span>
+                </div>
+            </header>
+            <div class="kratos-post-content">
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E5%8F%ABjava%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">什么叫java反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84"><span class="toc-number">2.</span> <span class="toc-text">为什么要使用反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84API"><span class="toc-number">3.</span> <span class="toc-text">反射API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E6%8F%90%E4%BE%9B%E4%BA%86%E4%BB%80%E4%B9%88%E5%8A%9F%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">JAVA反射机制提供了什么功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.</span> <span class="toc-text">使用反射的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">6.</span> <span class="toc-text">例子</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="什么叫java反射"><a href="#什么叫java反射" class="headerlink" title="什么叫java反射"></a>什么叫java反射</h3><ol>
+<li><p>Java反射是Java被视为动态（或准动态）语言的一个关键性质。</p>
+</li>
+<li><p>这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public, static 等）、superclass（例如Object）、实现之interfaces（例如Cloneable），也包括fields和methods的所有信息，并可于运行时改变fields内容或唤起methods。</p>
+</li>
+<li><p>Java反射机制容许程序在运行时加载、探知、使用编译期间完全未知的classes。</p>
+</li>
+<li><p>换言之，Java可以加载一个运行时才得知名称的class，获得其完整结构。</p>
+</li>
+</ol>
+<h3 id="为什么要使用反射"><a href="#为什么要使用反射" class="headerlink" title="为什么要使用反射"></a>为什么要使用反射</h3><ol>
+<li>如果正常实例化去一个对象，去调用它的任意方法或者属性跟通过反射去实例化一个对象到底有什么区别呢？</li>
+<li>其实在编译阶段是没有任何区别，但是根据反射的定义：反射的重点是在于运行阶段来获取类的信息，因为在编译阶段有部分的信息是不清晰的，需要在运行的阶段去加载的。</li>
+<li>简单来说：在编译阶段不知道需要实例化哪个对象，需要在运行阶段去从配置文件去加载，或者在运行阶段，需要临时访问类的信息。</li>
+</ol>
+<h3 id="反射API"><a href="#反射API" class="headerlink" title="反射API"></a>反射API</h3><ol>
+<li>java.lang.Class 反射的核心，可以获取类的属性，方法等等</li>
+<li>java.lang.reflect.Constructor 类的构造方法</li>
+<li>java.lang.reflect.Field 类的成员变量，可以用来获取和设置类之中的属性值</li>
+<li>java.lang.reflect.Method 类的方法，可以获取类中的方法信息</li>
+<li>java.lang.reflect.Modifier 类的访问权限</li>
+</ol>
+<blockquote>
+<p>Java反射相关的API在包java.lang.reflect中，JDK 1.6.0的reflect包如下图</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>Member接口</th>
+<th>该接口可以获取有关类成员（域或者方法）后者构造函数的信息。</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>AccessibleObject类</td>
+<td>该类是域(field)对象、方法(method)对象、构造函数(constructor)对象的基础类。它提供了将反射的对象标记为在使用时取消默认 Java 语言访问控制检查的能力。</td>
+</tr>
+<tr>
+<td>Array类</td>
+<td>该类提供动态地生成和访问JAVA数组的方法。</td>
+</tr>
+<tr>
+<td>Constructor类</td>
+<td>提供一个类的构造函数的信息以及访问类的构造函数的接口。</td>
+</tr>
+<tr>
+<td>Field类</td>
+<td>提供一个类的域的信息以及访问类的域的接口。</td>
+</tr>
+<tr>
+<td>Method类</td>
+<td>提供一个类的方法的信息以及访问类的方法的接口。</td>
+</tr>
+<tr>
+<td>Modifier类</td>
+<td>提供了 static 方法和常量，对类和成员访问修饰符进行解码。</td>
+</tr>
+<tr>
+<td>Proxy类</td>
+<td>提供动态地生成代理类和类实例的静态方法。</td>
+</tr>
+</tbody></table>
+<h3 id="JAVA反射机制提供了什么功能"><a href="#JAVA反射机制提供了什么功能" class="headerlink" title="JAVA反射机制提供了什么功能"></a>JAVA反射机制提供了什么功能</h3><ol>
+<li>在运行时判断任意一个对象所属的类</li>
+<li>在运行时构造任意一个类的对象</li>
+<li>在运行时判段任意一个类所具有的成员变量和方法</li>
+<li>在运行时调用任一个对象的方法</li>
+<li>在运行时创建新类对象</li>
+<li>在使用Java的反射功能时，基本首先都要获取类的Class对象，再通过Class对象获取其他的对象。</li>
+</ol>
+<h3 id="使用反射的步骤"><a href="#使用反射的步骤" class="headerlink" title="使用反射的步骤"></a>使用反射的步骤</h3><ol>
+<li>获取想要的类的class对象</li>
+<li>调用类中的方法</li>
+<li>使用反射API来操作这些信息</li>
+</ol>
+<h3 id="例子"><a href="#例子" class="headerlink" title="例子"></a>例子</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Type</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> pubIntField;</span><br><span class="line">	<span class="keyword">public</span> String pubStringField;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> prvIntField;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">Type</span><span class="params">()</span></span>&#123;</span><br><span class="line">		Log(<span class="string">&quot;Default Constructor&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	Type(<span class="keyword">int</span> arg1, String arg2)&#123;</span><br><span class="line">		pubIntField = arg1;</span><br><span class="line">		pubStringField = arg2;</span><br><span class="line">		</span><br><span class="line">		Log(<span class="string">&quot;Constructor with parameters&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIntField</span><span class="params">(<span class="keyword">int</span> val)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.prvIntField = val;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIntField</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> prvIntField;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Log</span><span class="params">(String msg)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;Type:&quot;</span> + msg);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">ExtendType</span> <span class="keyword">extends</span> <span class="title">Type</span></span>&#123;</span><br><span class="line">	<span class="keyword">public</span> <span class="keyword">int</span> pubIntExtendField;</span><br><span class="line">	<span class="keyword">public</span> String pubStringExtendField;</span><br><span class="line">	<span class="keyword">private</span> <span class="keyword">int</span> prvIntExtendField;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="title">ExtendType</span><span class="params">()</span></span>&#123;</span><br><span class="line">		Log(<span class="string">&quot;Default Constructor&quot;</span>);</span><br><span class="line">	&#125;	</span><br><span class="line">	</span><br><span class="line">	ExtendType(<span class="keyword">int</span> arg1, String arg2)&#123;		</span><br><span class="line">		pubIntExtendField = arg1;</span><br><span class="line">		pubStringExtendField = arg2;</span><br><span class="line">		</span><br><span class="line">		Log(<span class="string">&quot;Constructor with parameters&quot;</span>);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">setIntExtendField</span><span class="params">(<span class="keyword">int</span> field7)</span> </span>&#123;</span><br><span class="line">		<span class="keyword">this</span>.prvIntExtendField = field7;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">getIntExtendField</span><span class="params">()</span> </span>&#123;</span><br><span class="line">		<span class="keyword">return</span> prvIntExtendField;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	<span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Log</span><span class="params">(String msg)</span></span>&#123;</span><br><span class="line">		System.out.println(<span class="string">&quot;ExtendType:&quot;</span> + msg);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<ol>
+<li>获取类的Class对象</li>
+</ol>
+<blockquote>
+<p>Class 类的实例表示正在运行的 Java 应用程序中的类和接口。获取类的Class对象有多种方式：</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法调用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>调用getClass</td>
+<td>Boolean var1 = true;Class&lt;?&gt; classType2 = var1.getClass();System.out.println(classType2);输出：class java.lang.Boolean</td>
+</tr>
+<tr>
+<td>运用.class 语法</td>
+<td>Class&lt;?&gt; classType4 = Boolean.class;System.out.println(classType4);输出：class java.lang.Boolean</td>
+</tr>
+<tr>
+<td>运用static method Class.forName()</td>
+<td>Class&lt;?&gt; classType5 = Class.forName(“java.lang.Boolean”);System.out.println(classType5);输出：class java.lang.Boolean</td>
+</tr>
+<tr>
+<td>运用primitive wrapper classes的TYPE 语法这里返回的是原生类型，和Boolean.class返回的不同</td>
+<td>Class&lt;?&gt; classType3 = Boolean.TYPE;System.out.println(classType3);    输出：boolean</td>
+</tr>
+</tbody></table>
+<ol start="2">
+<li>获取类的Fields</li>
+</ol>
+<blockquote>
+<p>可以通过反射机制得到某个类的某个属性，然后改变对应于这个类的某个实例的该属性值。JAVA 的Class<T>类提供了几个方法获取类的属性。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法调用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public Field getField(String name)</td>
+<td>返回一个 Field 对象，它反映此 Class 对象所表示的类或接口的指定公共成员字段</td>
+</tr>
+<tr>
+<td>public Field[] getFields()</td>
+<td>返回一个包含某些 Field 对象的数组，这些对象反映此 Class 对象所表示的类或接口的所有可访问公共字段</td>
+</tr>
+<tr>
+<td>public Field getDeclaredField(String name)</td>
+<td>返回一个 Field 对象，该对象反映此 Class 对象所表示的类或接口的指定已声明字段</td>
+</tr>
+<tr>
+<td>public Field[] getDeclaredFields()</td>
+<td>返回 Field 对象的一个数组，这些对象反映此 Class 对象所表示的类或接口所声明的所有字段</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; classType = ExtendType.class;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用getFields获取属性</span></span><br><span class="line">Field[] fields = classType.getFields();</span><br><span class="line"><span class="keyword">for</span> (Field f : fields)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用getDeclaredFields获取属性</span></span><br><span class="line">fields = classType.getDeclaredFields();</span><br><span class="line"><span class="keyword">for</span> (Field f : fields)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(f);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.ExtendType.pubIntExtendField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public java.lang.String com.quincy.ExtendType.pubStringExtendField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.Type.pubIntField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public java.lang.String com.quincy.Type.pubStringField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.ExtendType.pubIntExtendField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public java.lang.String com.quincy.ExtendType.pubStringExtendField</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">private int com.quincy.ExtendType.prvIntExtendField</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>可见getFields和getDeclaredFields区别：</p>
+<p>getFields返回的是申明为public的属性，包括父类中定义，</p>
+<p>getDeclaredFields返回的是指定类定义的所有定义的属性，不包括父类的。</p>
+</blockquote>
+<ol start="3">
+<li>获取类的Method</li>
+</ol>
+<blockquote>
+<p>通过反射机制得到某个类的某个方法，然后调用对应于这个类的某个实例的该方法</p>
+<p>Class<T>类提供了几个方法获取类的方法。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法调用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public Method getMethod(String name, Class&lt;?&gt;… parameterTypes)</td>
+<td>返回一个 Method 对象，它反映此 Class 对象所表示的类或接口的指定公共成员方法</td>
+</tr>
+<tr>
+<td>public Method[] getMethods()</td>
+<td>返回一个包含某些 Method 对象的数组，这些对象反映此 Class 对象所表示的类或接口（包括那些由该类或接口声明的以及从超类和超接口继承的那些的类或接口）的公共 member 方法</td>
+</tr>
+<tr>
+<td>public Method getDeclaredMethod(String name,Class&lt;?&gt;… parameterTypes)</td>
+<td>返回一个 Method 对象，该对象反映此 Class 对象所表示的类或接口的指定已声明方法</td>
+</tr>
+<tr>
+<td>public Method[] getDeclaredMethods()</td>
+<td>返回 Method 对象的一个数组，这些对象反映此 Class 对象表示的类或接口声明的所有方法，包括公共、保护、默认（包）访问和私有方法，但不包括继承的方法</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用getMethods获取函数 </span></span><br><span class="line">Class&lt;?&gt; classType = ExtendType.class;</span><br><span class="line">Method[] methods = classType.getMethods();</span><br><span class="line"><span class="keyword">for</span> (Method m : methods)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用getDeclaredMethods获取函数 </span></span><br><span class="line">methods = classType.getDeclaredMethods();</span><br><span class="line"><span class="keyword">for</span> (Method m : methods)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public void com.quincy.ExtendType.setIntExtendField(int)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.ExtendType.getIntExtendField()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public void com.quincy.Type.setIntField(int)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.Type.getIntField()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final native void java.lang.Object.wait(long) throws java.lang.InterruptedException</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final void java.lang.Object.wait() throws java.lang.InterruptedException</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final void java.lang.Object.wait(long,int) throws java.lang.InterruptedException</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public boolean java.lang.Object.equals(java.lang.Object)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public java.lang.String java.lang.Object.toString()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public native int java.lang.Object.hashCode()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final native java.lang.Class java.lang.Object.getClass()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final native void java.lang.Object.notify()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public final native void java.lang.Object.notifyAll()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">private void com.quincy.ExtendType.Log(java.lang.String)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public void com.quincy.ExtendType.setIntExtendField(int)</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public int com.quincy.ExtendType.getIntExtendField()</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>获取类的Constructor</li>
+</ol>
+<blockquote>
+<p>通过反射机制得到某个类的构造器，然后调用该构造器创建该类的一个实例 </p>
+<p>Class<T>类提供了几个方法获取类的构造器。</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法调用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>public Constructor<T> getConstructor(Class&lt;?&gt;… parameterTypes)</td>
+<td>返回一个 Constructor 对象，它反映此 Class 对象所表示的类的指定公共构造方法</td>
+</tr>
+<tr>
+<td>public Constructor&lt;?&gt;[] getConstructors()</td>
+<td>返回一个包含某些 Constructor 对象的数组，这些对象反映此 Class 对象所表示的类的所有公共构造方法</td>
+</tr>
+<tr>
+<td>public Constructor<T> getDeclaredConstructor(Class&lt;?&gt;… parameterTypes)</td>
+<td>返回一个 Constructor 对象，该对象反映此 Class 对象所表示的类或接口的指定构造方法</td>
+</tr>
+<tr>
+<td>public Constructor&lt;?&gt;[] getDeclaredConstructors()</td>
+<td>返回 Constructor 对象的一个数组，这些对象反映此 Class 对象表示的类声明的所有构造方法。它们是公共、保护、默认（包）访问和私有构造方法</td>
+</tr>
+</tbody></table>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// 使用getConstructors获取构造器  </span></span><br><span class="line">Constructor&lt;?&gt;[] constructors = classType.getConstructors();</span><br><span class="line"><span class="keyword">for</span> (Constructor&lt;?&gt; m : constructors)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">System.out.println();</span><br><span class="line"></span><br><span class="line"><span class="comment">// 使用getDeclaredConstructors获取构造器   </span></span><br><span class="line">constructors = classType.getDeclaredConstructors();</span><br><span class="line"><span class="keyword">for</span> (Constructor&lt;?&gt; m : constructors)</span><br><span class="line">&#123;</span><br><span class="line">    System.out.println(m);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment">输出：</span></span><br><span class="line"><span class="comment">public com.quincy.ExtendType()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">public com.quincy.ExtendType()</span></span><br><span class="line"><span class="comment"></span></span><br><span class="line"><span class="comment">com.quincy.ExtendType(int,java.lang.String)</span></span><br><span class="line"><span class="comment">*/</span></span><br></pre></td></tr></table></figure>
+
+<ol start="5">
+<li>新建类的实例</li>
+</ol>
+<blockquote>
+<p>通过反射机制创建新类的实例，有几种方法可以创建</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>方法调用</th>
+<th>结果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>调用无自变量ctor</td>
+<td>1、调用类的Class对象的newInstance方法，该方法会调用对象的默认构造器，如果没有默认构造器，会调用失败.Class<?> classType = ExtendType.class;Object inst = classType.newInstance();System.out.println(inst);输出：Type:Default ConstructorExtendType:Default Constructorcom.quincy.ExtendType@d80be3 2、调用默认Constructor对象的newInstance方法Class<?> classType = ExtendType.class;Constructor&lt;?&gt; constructor1 = classType.getConstructor();Object inst = constructor1.newInstance();System.out.println(inst);输出：Type:Default ConstructorExtendType:Default Constructorcom.quincy.ExtendType@1006d75</td>
+</tr>
+<tr>
+<td>调用带参数ctor</td>
+<td><strong>3、调用带参数Constructor对象的newInstance方法</strong>Constructor&lt;?&gt; constructor2 =classType.getDeclaredConstructor(int.class, String.class);Object inst = constructor2.newInstance(1, “123”);System.out.println(inst);输出：Type:Default ConstructorExtendType:Constructor with parameterscom.quincy.ExtendType@15e83f9</td>
+</tr>
+</tbody></table>
+<ol start="6">
+<li>调用类的函数</li>
+</ol>
+<blockquote>
+<p>通过反射获取类Method对象，调用Field的Invoke方法调用函数。</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; classType = ExtendType.class;</span><br><span class="line">Object inst = classType.newInstance();</span><br><span class="line">Method logMethod = classType.getDeclaredMethod(<span class="string">&quot;Log&quot;</span>, String.class);</span><br><span class="line">logMethod.invoke(inst, <span class="string">&quot;test&quot;</span>);</span><br><span class="line"></span><br><span class="line">输出：</span><br><span class="line">Type:Default Constructor</span><br><span class="line">ExtendType:Default Constructor</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">Class&lt;?&gt; classType = ExtendType.class;</span><br><span class="line">Object inst = classType.newInstance();</span><br><span class="line">Method logMethod = classType.getDeclaredMethod(<span class="string">&quot;Log&quot;</span>, String.class);</span><br><span class="line"></span><br><span class="line">logMethod.invoke(inst, <span class="string">&quot;test&quot;</span>);</span><br></pre></td></tr></table></figure>
+
+<ol start="7">
+<li>设置/获取类的属性值</li>
+</ol>
+<blockquote>
+<p>通过反射获取类的Field对象，调用Field方法设置或获取值</p>
+</blockquote>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Class&lt;?&gt; classType = ExtendType.class;</span><br><span class="line">Object inst = classType.newInstance();</span><br><span class="line">Field intField = classType.getField(<span class="string">&quot;pubIntExtendField&quot;</span>);</span><br><span class="line">intField.setInt(inst, <span class="number">100</span>);</span><br><span class="line">    <span class="keyword">int</span> value = intField.getInt(inst);</span><br></pre></td></tr></table></figure>
+
+
+            </div>
+            
+                <div class="kratos-copyright text-center clearfix">
+                    <h5>本作品采用 <a rel="license nofollow" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                    <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                    
+                    
+                        <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                        <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://blog.yongkj.cn/2021/02/06/java-reflect/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://blog.yongkj.cn/2021/02/06/java-reflect/";
+            const title         = "「反射」";
+            const excerpt       = `什么叫java反射
+Java反射是Java被视为动态（或准动态）语言的一个关键性质。
+
+这个机制允许程序在运行时透过Reflection APIs取得任何一个已知名称的class的内部信息，包括其modifiers（诸如public,...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                    
+                    </div>
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/%E5%8A%A8%E6%80%81/" rel="tag">动态</a>, <a class="tag-none-link" href="/tags/%E5%AE%9E%E4%BE%8B/" rel="tag">实例</a>, <a class="tag-none-link" href="/tags/%E6%9E%84%E9%80%A0/" rel="tag">构造</a>, <a class="tag-none-link" href="/tags/%E8%8E%B7%E5%8F%96/" rel="tag">获取</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-02-10</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" 框架注解" href="/2021/02/05/java-framework-annotations/">&lt; 上一篇</a>
+                </div>
+                
+                
+                <div class="nav-next clearfix">
+                    <a title=" 注解" href="/2021/02/07/java-annotation/">下一篇 &gt;</a>
+                </div>
+                
+            </nav>
+        
+        
+    </article>
+</section>
+        </div>
+                
+            <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+                
+                    <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%80%E4%B9%88%E5%8F%ABjava%E5%8F%8D%E5%B0%84"><span class="toc-number">1.</span> <span class="toc-text">什么叫java反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E8%A6%81%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84"><span class="toc-number">2.</span> <span class="toc-text">为什么要使用反射</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%8D%E5%B0%84API"><span class="toc-number">3.</span> <span class="toc-text">反射API</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#JAVA%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E6%8F%90%E4%BE%9B%E4%BA%86%E4%BB%80%E4%B9%88%E5%8A%9F%E8%83%BD"><span class="toc-number">4.</span> <span class="toc-text">JAVA反射机制提供了什么功能</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%BF%E7%94%A8%E5%8F%8D%E5%B0%84%E7%9A%84%E6%AD%A5%E9%AA%A4"><span class="toc-number">5.</span> <span class="toc-text">使用反射的步骤</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BE%8B%E5%AD%90"><span class="toc-number">6.</span> <span class="toc-text">例子</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+                    <!-- Moved to about.ejs -->
+                
+                    
+  <aside id="krw-categories" class="widget widget-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%80%E6%AC%A1/">第一次</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E4%B9%90%E7%A9%BA%E9%97%B4/">音乐空间</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86/">项目经历</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+                
+                    
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/apility/" style="font-size: 0.6em;">apility</a> <a href="/tags/bus/" style="font-size: 0.6em;">bus</a> <a href="/tags/city/" style="font-size: 0.6em;">city</a> <a href="/tags/comfort/" style="font-size: 0.6em;">comfort</a> <a href="/tags/communication/" style="font-size: 0.6em;">communication</a> <a href="/tags/contribute/" style="font-size: 0.6em;">contribute</a> <a href="/tags/convenient/" style="font-size: 0.6em;">convenient</a> <a href="/tags/develop/" style="font-size: 0.6em;">develop</a> <a href="/tags/education/" style="font-size: 0.6em;">education</a> <a href="/tags/enhance/" style="font-size: 0.6em;">enhance</a> <a href="/tags/facility/" style="font-size: 0.6em;">facility</a> <a href="/tags/flight/" style="font-size: 0.6em;">flight</a> <a href="/tags/foreign/" style="font-size: 0.6em;">foreign</a> <a href="/tags/free/" style="font-size: 0.6em;">free</a> <a href="/tags/hello/" style="font-size: 0.6em;">hello</a> <a href="/tags/improve/" style="font-size: 0.8em;">improve</a> <a href="/tags/information/" style="font-size: 0.6em;">information</a> <a href="/tags/invest/" style="font-size: 0.6em;">invest</a>
+      </div>
+  </aside>
+
+                
+                    
+  <aside id="krw-posts" class="widget widget-kratos-poststab">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/09/java-io-stream/"><i class="fa  fa-book"></i> 输入输出流</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/08/java-class-loading/"><i class="fa  fa-book"></i> 类加载</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/07/java-annotation/"><i class="fa  fa-book"></i> 注解</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/06/java-reflect/"><i class="fa  fa-book"></i> 反射</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/05/java-framework-annotations/"><i class="fa  fa-book"></i> 框架注解</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+                
+            </section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer">
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://twitter.com/Candiinya"><i class="fa fa-twitter"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/yongkj"><i class="fa fa-github"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 yongkj 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Made with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by <a href="https://candinya.com" target="_blank" rel="nofollow">Candinya</a>.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://www.yongkj.cn" target="_blank">勇往直前</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+<script async src="/js/candy.min.js"></script>
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+    </body>
+</html>

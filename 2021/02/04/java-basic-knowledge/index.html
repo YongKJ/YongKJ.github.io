@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  <link rel="icon" href="/images/favicon.ico">
+  <title>基础知识 | YongKJ</title>
+  <meta name="author" content="yongkj" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    
+      <meta name="description" itemprop="description" content="Pursue excellence and success will follow." />
+    
+  
+  <meta name="description" content="8种基本数据类型 关于Java的8种基本数据类型，其名称、位数、默认值、取值范围及示例如下表所示：     序号 数据类型 位数 默认值 取值范围 举例说明    1 byte(位) 8 0 -2^7 ~ +2^7-1 byte b &#x3D; 10;   2 short(短整数) 16 0 -2^15 ~ +2^15-1 short s &#x3D; 10;   3 int(整数) 32 0 -2^31 ~ +2">
+<meta property="og:type" content="article">
+<meta property="og:title" content="基础知识">
+<meta property="og:url" content="https://blog.yongkj.cn/2021/02/04/java-basic-knowledge/index.html">
+<meta property="og:site_name" content="YongKJ">
+<meta property="og:description" content="8种基本数据类型 关于Java的8种基本数据类型，其名称、位数、默认值、取值范围及示例如下表所示：     序号 数据类型 位数 默认值 取值范围 举例说明    1 byte(位) 8 0 -2^7 ~ +2^7-1 byte b &#x3D; 10;   2 short(短整数) 16 0 -2^15 ~ +2^15-1 short s &#x3D; 10;   3 int(整数) 32 0 -2^31 ~ +2">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://blog.yongkj.cn/2021/02/04/java-basic-knowledge/1_swedishwinter.jpg">
+<meta property="article:published_time" content="2021-02-04T12:50:52.000Z">
+<meta property="article:modified_time" content="2021-02-10T08:01:17.000Z">
+<meta property="article:author" content="yongkj">
+<meta property="article:tag" content="类型">
+<meta property="article:tag" content="区别">
+<meta property="article:tag" content="异常">
+<meta property="article:tag" content="传递">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://blog.yongkj.cn/2021/02/04/java-basic-knowledge/1_swedishwinter.jpg">
+<meta name="twitter:site" content="@Candiinya">
+  <link rel="alternate" href="atom.xml" type="application/atom+xml">
+  <!-- 站点验证相关 -->
+  
+    
+    
+    
+  
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kratosr.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="highlight-css" href="/css/highlight.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="fontawe-css" href="https://cdn.jsdelivr.net/npm/font-awesome@4.7.0/css/font-awesome.min.css" type="text/css" media="all">
+  <link rel="stylesheet" id="nprogress-css" href="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.min.css" type="text/css" media="all">
+  
+  
+  
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css">
+  
+  
+    <link rel="stylesheet" id="darkmode-css" href="/css/kr-dark.min.css" type="text/css" media="all">
+  
+  <!-- 不得不预先加载的一些JS文件 -->
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js"></script>
+  
+    <script src="https://cdn.jsdelivr.net/npm/qrcode_js@1.0.0/qrcode.min.js"></script>
+  
+  
+<meta name="generator" content="Hexo 5.2.0"></head>
+
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <div class="nav-toggle"><a class="kratos-nav-toggle js-kratos-nav-toggle"><i></i></a></div>
+            <header id="kratos-header-section">
+                <div class="container">
+                    <div class="nav-header">
+                        <div class="color-logo"><a href="/">YongKJ</a></div>
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                            
+                            
+                                <li><a href="/"><i class="fa fa-home"></i>首页</a></li>
+                            
+                            
+                            
+                                <li><a href="/archives/"><i class="fa fa-file"></i>档案馆</a></li>
+                            
+                            
+                            
+                                <li>
+                                <a><i class="fa fa-link"></i>链接</a>
+                                <ul class="sub-menu">
+                                    
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://software.yongkj.cn/software/">软件俱乐部</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://pocketyun.yongkj.cn/pocketyun/">袖珍网盘吧</a></li>
+                                    
+                                    
+                                    
+                                        <li><a target="_blank" rel="noopener" href="http://study.yongkj.cn/">英语随身学</a></li>
+                                    
+                                    
+                                </ul>
+                                </li>
+                            
+                            
+                            
+                                <li><a href="/atom.xml"><i class="fa fa-rss"></i>RSS 订阅</a></li>
+                            
+                            
+                            
+                                <li><a href="/about/"><i class="fa fa-paper-plane"></i>关于我</a></li>
+                            
+                            
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/"><h2>YongKJ</h2><br><span>勇往直前，永不言弃</span></a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                    <div class="row">
+                        
+        <div id="main">
+            <section class="col-md-8">
+    <article>
+        <div class="kratos-hentry kratos-post-inner clearfix">
+            <header class="kratos-entry-header">
+                <h1 class="kratos-entry-title text-center">基础知识</h1>
+                
+                <div class="kratos-post-meta text-center">
+                    <span>
+                        <i class="fa fa-calendar"></i> 2021-02-04
+                        <i class="fa fa-folder"></i> 分类于 <a class="label-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a>
+                        <i class="fa fa-user"></i> 作者 yongkj
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~2.90K
+                        
+                        字
+                        
+                    </span>
+                </div>
+            </header>
+            <div class="kratos-post-content">
+                
+                    <div class="kratos-post-inner-toc">
+                        <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">8种基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E6%8B%86%E7%AE%B1"><span class="toc-number">2.</span> <span class="toc-text">自动装箱拆箱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#equals-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">equals()和&#x3D;&#x3D;的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String%E3%80%81StringBuffer%E5%92%8CStringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">String、StringBuffer和StringBuilder的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E6%B5%81%E5%92%8C%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="toc-number">5.</span> <span class="toc-text">字节流和字符流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8"><span class="toc-number">6.</span> <span class="toc-text">异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp-%E5%92%8C-amp-amp-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">&amp;和&amp;&amp;的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int%E5%92%8CInteger%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">int和Integer有什么区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92"><span class="toc-number">9.</span> <span class="toc-text">值传递和引用传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lamda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">10.</span> <span class="toc-text">Lamda表达式的优缺点</span></a></li></ol>
+                    </div>
+                
+                <hr />
+                <h3 id="8种基本数据类型"><a href="#8种基本数据类型" class="headerlink" title="8种基本数据类型"></a>8种基本数据类型</h3><ol>
+<li>关于Java的8种基本数据类型，其名称、位数、默认值、取值范围及示例如下表所示：</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>序号</th>
+<th>数据类型</th>
+<th>位数</th>
+<th>默认值</th>
+<th>取值范围</th>
+<th>举例说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>byte(位)</td>
+<td>8</td>
+<td>0</td>
+<td>-2^7 ~ +2^7-1</td>
+<td>byte b = 10;</td>
+</tr>
+<tr>
+<td>2</td>
+<td>short(短整数)</td>
+<td>16</td>
+<td>0</td>
+<td>-2^15 ~ +2^15-1</td>
+<td>short s = 10;</td>
+</tr>
+<tr>
+<td>3</td>
+<td>int(整数)</td>
+<td>32</td>
+<td>0</td>
+<td>-2^31 ~ +2^31-1</td>
+<td>int i = 10;</td>
+</tr>
+<tr>
+<td>4</td>
+<td>long(长整数)</td>
+<td>64</td>
+<td>0</td>
+<td>-2^63 ~ +2^63-1</td>
+<td>long l = 10l;</td>
+</tr>
+<tr>
+<td>5</td>
+<td>float(单精度)</td>
+<td>32</td>
+<td>0.0</td>
+<td>-2^128 ~ +2^127</td>
+<td>float f = 10.0f;</td>
+</tr>
+<tr>
+<td>6</td>
+<td>double(双精度)</td>
+<td>64</td>
+<td>0.0</td>
+<td>-2^1024 ~ +2^1023</td>
+<td>double d = 10.0d;</td>
+</tr>
+<tr>
+<td>7</td>
+<td>char(字符)</td>
+<td>16</td>
+<td>空</td>
+<td>0 ~ +2^16-1</td>
+<td>char c = ‘c’;</td>
+</tr>
+<tr>
+<td>8</td>
+<td>boolean(布尔值)</td>
+<td>8</td>
+<td>false</td>
+<td>true、false</td>
+<td>boolean b = true;</td>
+</tr>
+</tbody></table>
+<h3 id="自动装箱拆箱"><a href="#自动装箱拆箱" class="headerlink" title="自动装箱拆箱"></a>自动装箱拆箱</h3><ol>
+<li>装箱就是自动将基本数据类型转换为包装器类型；</li>
+<li>拆箱就是自动将包装器类型转换为基本数据类型。</li>
+</ol>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//自动装箱</span></span><br><span class="line">Integer total = <span class="number">99</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">//自动拆箱</span></span><br><span class="line"><span class="keyword">int</span> totalprim = total;</span><br></pre></td></tr></table></figure>
+
+<h3 id="equals-和-的区别"><a href="#equals-和-的区别" class="headerlink" title="equals()和==的区别"></a>equals()和==的区别</h3><ol>
+<li>equals是判断两个变量或者实例指向同一个内存空间的值是否相同</li>
+<li>==是判断两个变量或者实例是不是指向同一个内存空间</li>
+<li>==是判断两个人是不是住在同一个地址，而equals是判断同一个地址里住的人是不是同一个</li>
+</ol>
+<h3 id="String、StringBuffer和StringBuilder的区别"><a href="#String、StringBuffer和StringBuilder的区别" class="headerlink" title="String、StringBuffer和StringBuilder的区别"></a>String、StringBuffer和StringBuilder的区别</h3><ol>
+<li>可变与不可变：String是不可变字符串对象，StringBuilder和StringBuffer是可变字符串对象（其内部的字符数组长度可变）。</li>
+<li>是否多线程安全：String 是线程安全的。StringBuffer 也是线程安全的，而 StringBuilder 是非线程安全的。</li>
+<li>String、StringBuilder、StringBuffer三者的执行效率：</li>
+</ol>
+<p>​      1）StringBuilder &gt; StringBuffer &gt; String</p>
+<ol start="4">
+<li>应当根据不同的情况来进行选择使用：</li>
+</ol>
+<p>​      1）当字符串相加操作或者改动较少的情况下，建议使用 String str=”hello”这种形式；</p>
+<p>​      2）当字符串相加操作较多的情况下，建议使用StringBuilder，如果采用了多线程，则使用StringBuffer。</p>
+<h3 id="字节流和字符流"><a href="#字节流和字符流" class="headerlink" title="字节流和字符流"></a>字节流和字符流</h3><ol>
+<li>什么是字节流？</li>
+</ol>
+<p>​      1）传输数据的最基本单位是字节的流。</p>
+<ol start="2">
+<li>什么是字符流？</li>
+</ol>
+<p>​      1）传输数据的最基本单位是字符的流。</p>
+<ol start="3">
+<li>实现一个拷贝文件的类使用字节流还是字符流？</li>
+</ol>
+<p>​      1）字符类型一般包括：word、txt、文本类型。</p>
+<p>​      2）字节类型一般包括：图片、声音、图像等。</p>
+<p>​      3）因为一般字符流最终都要转换成字节流，所以为考虑到通用性，要用字节流。</p>
+<h3 id="异常"><a href="#异常" class="headerlink" title="异常"></a>异常</h3><ol>
+<li>程序错误分为三种：编译错误；运行时错误；逻辑错误。</li>
+</ol>
+<p>​      1）编译错误：程序没有遵循语法规则，编译程序发现并提示错误的原因和位置。</p>
+<p>​      2）运行时错误：程序在执行时，运行环境发现了不能执行的操作</p>
+<p>​      3）逻辑错误：程序没有按照预期的逻辑顺序执行</p>
+<p>​      4）异常：指程序运行时发生错误，而异常处理就是对这些错误进行处理和控制</p>
+<ol start="2">
+<li>分类</li>
+</ol>
+<p>​      1）Error（错误）:是程序无法处理的错误，表示运行应用程序中较严重问题。</p>
+<p>​      2）Exception（异常）：是程序本身可以处理的异常。</p>
+<ol start="3">
+<li>Exception（异常）分类</li>
+</ol>
+<p>​      1）运行时异常：一般是由程序逻辑错误引起的，当程序中可能出现这类异常，即使没有用try-catch语句捕获它或throws子句声明抛出它，也会编译通过。</p>
+<p>​      2）非运行时异常 （编译异常）：从程序语法角度讲是必须进行处理的异常，如果不处理，程序就不能编译通过。</p>
+<ol start="4">
+<li>异常的处理</li>
+</ol>
+<p>​      1）抛出异常：throw，throws</p>
+<p>​      2）捕获异常：try，catch，finally</p>
+<h3 id="amp-和-amp-amp-的区别"><a href="#amp-和-amp-amp-的区别" class="headerlink" title="&amp;和&amp;&amp;的区别"></a>&amp;和&amp;&amp;的区别</h3><ol>
+<li>&amp;运算符有两种用法：(1)按位与；(2)逻辑与。</li>
+<li>&amp;&amp;运算符是短路与运算。</li>
+<li>逻辑与跟短路与的差别是非常巨大的，虽然二者都要求运算符左右两端的布尔值都是true整个表达式的值才是true。</li>
+<li>&amp;&amp;之所以称为短路运算是因为，如果&amp;&amp;左边的表达式的值是false，右边的表达式会被直接短路掉，不会进行运算。</li>
+<li>很多时候我们可能都需要用&amp;&amp;而不是&amp;，例如在验证用户登录时判定用户名不是null而且不是空字符串，应当写为：username != null &amp;&amp;!username.equals(“”)</li>
+<li>二者的顺序不能交换，更不能用&amp;运算符，因为第一个条件如果不成立，根本不能进行字符串的equals比较，否则会产生NullPointerException异常。</li>
+</ol>
+<h3 id="int和Integer有什么区别"><a href="#int和Integer有什么区别" class="headerlink" title="int和Integer有什么区别"></a>int和Integer有什么区别</h3><ol>
+<li>Java是一个近乎纯洁的面向对象编程语言，但是为了编程的方便还是引入了基本数据类型，但是为了能够将这些基本数据类型当成对象操作，Java为每一个基本数据类型都引入了对应的包装类型（wrapper class）</li>
+<li>int的包装类就是Integer，从Java 5开始引入了自动装箱/拆箱机制，使得二者可以相互转换</li>
+<li>Java 为每个原始类型提供了包装类型：</li>
+</ol>
+<p>​      1）原始类型: boolean，char，byte，short，int，long，float，double</p>
+<p>​      2）包装类型：Boolean，Character，Byte，Short，Integer，Long，Float，Double</p>
+<h3 id="值传递和引用传递"><a href="#值传递和引用传递" class="headerlink" title="值传递和引用传递"></a>值传递和引用传递</h3><ol>
+<li>值传递是对基本型变量而言的,传递的是该变量的一个副本,改变副本不影响原变量</li>
+<li>引用传递一般是对于对象型变量而言的,传递的是该对象地址的一个副本, 并不是原对象本身</li>
+<li>所以对引用对象进行操作会同时改变原对象</li>
+<li>一般认为,java内的传递都是值传递</li>
+</ol>
+<h3 id="Lamda表达式的优缺点"><a href="#Lamda表达式的优缺点" class="headerlink" title="Lamda表达式的优缺点"></a>Lamda表达式的优缺点</h3><ol>
+<li>优点：</li>
+</ol>
+<p>​      1）简洁。</p>
+<p>​      2）非常容易并行计算。</p>
+<p>​      3）可能代表未来的编程趋势。</p>
+<ol start="2">
+<li>缺点：</li>
+</ol>
+<p>​      1）若不用并行计算，很多时候计算速度没有比传统的 for 循环快。（并行计算有时需要预热才显示出效率优势）</p>
+<p>​      2）不容易调试。</p>
+<p>​      3）若其他程序员没有学过 lambda 表达式，代码不容易让其他语言的程序员看懂。</p>
+
+            </div>
+            
+                <div class="kratos-copyright text-center clearfix">
+                    <h5>本作品采用 <a rel="license nofollow" target="_blank" href="http://creativecommons.org/licenses/by-sa/4.0/">知识共享署名-相同方式共享 4.0 国际许可协议</a> 进行许可</h5>
+                </div>
+            
+            <footer class="kratos-entry-footer clearfix">
+                
+                    <div class="post-like-donate text-center clearfix" id="post-like-donate">
+                    
+                    
+                        <a class="share" href="javascript:;"><i class="fa fa-share-alt"></i> 分享</a>
+                        <div class="share-wrap" style="display: none;">
+    <div class="share-group">
+        <a href="javascript:;" class="share-plain qq" onclick="share('qq');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-qq"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain qzone" onclick="share('qzone');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-star"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weixin pop style-plain" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weixin"></i>
+            </div>
+            <div class="share-int">
+                <div class="qrcode" id="wechat-qr"></div>
+                <p>打开微信“扫一扫”，打开网页后点击屏幕右上角分享按钮</p>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain weibo" onclick="share('weibo');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-weibo"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain facebook style-plain" onclick="share('facebook');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-facebook"></i>
+            </div>
+        </a>
+        <a href="javascript:;" class="share-plain twitter style-plain" onclick="share('twitter');" rel="nofollow">
+            <div class="icon-wrap">
+                <i class="fa fa-twitter"></i>
+            </div>
+        </a>
+    </div>
+    <script type="text/javascript">
+        $(()=>{
+            new QRCode("wechat-qr", {
+                text: "https://blog.yongkj.cn/2021/02/04/java-basic-knowledge/",
+                width: 150,
+                height: 150,
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        });
+        function share(dest) {
+            const qqBase        = "https://connect.qq.com/widget/shareqq/index.html?";
+            const weiboBase     = "https://service.weibo.com/share/share.php?";
+            const qzoneBase     = "https://sns.qzone.qq.com/cgi-bin/qzshare/cgi_qzshare_onekey?";
+            const facebookBase  = "https://www.facebook.com/sharer/sharer.php?";
+            const twitterBase   = "https://twitter.com/intent/tweet?";
+            const hostUrl       = "https://blog.yongkj.cn/2021/02/04/java-basic-knowledge/";
+            const title         = "「基础知识」";
+            const excerpt       = `8种基本数据类型
+关于Java的8种基本数据类型，其名称、位数、默认值、取值范围及示例如下表所示：
+
+
+
+
+序号
+数据类型
+位数
+默认值
+取值范围
+举例说明
+
+
+
+1
+byte(位)
+8
+0
+-2^7 ~ +2^7-1
+byte b ...`;
+            let _URL;
+            switch (dest) {
+                case "qq"       : _URL = qqBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";     break;
+                case "weibo"    : _URL = weiboBase+"url="+hostUrl+"&title="+title+excerpt;                                 break;
+                case "qzone"    : _URL = qzoneBase+"url="+hostUrl+"&title="+title+"&desc=&summary="+excerpt+"&site=cxpy";  break;
+                case "facebook" : _URL = facebookBase+"u="+hostUrl;                                                        break;
+                case "twitter"  : _URL = twitterBase+"text="+title+excerpt+"&url="+hostUrl;                                break;
+            }
+            window.open(_URL);
+        };
+    </script>
+</div>
+                    
+                    </div>
+                
+                <div class="footer-tag clearfix">
+                    <div class="pull-left">
+                    <i class="fa fa-tags"></i>
+                        <a class="tag-none-link" href="/tags/%E4%BC%A0%E9%80%92/" rel="tag">传递</a>, <a class="tag-none-link" href="/tags/%E5%8C%BA%E5%88%AB/" rel="tag">区别</a>, <a class="tag-none-link" href="/tags/%E5%BC%82%E5%B8%B8/" rel="tag">异常</a>, <a class="tag-none-link" href="/tags/%E7%B1%BB%E5%9E%8B/" rel="tag">类型</a>
+                    </div>
+                    <div class="pull-date">
+                    <span>最后编辑：2021-02-10</span>
+                    </div>
+                </div>
+            </footer>
+        </div>
+        
+            <nav class="navigation post-navigation clearfix" role="navigation">
+                
+                <div class="nav-previous clearfix">
+                    <a title=" 面向对象" href="/2021/02/03/java-object-oriented/">&lt; 上一篇</a>
+                </div>
+                
+                
+                <div class="nav-next clearfix">
+                    <a title=" 框架注解" href="/2021/02/05/java-framework-annotations/">下一篇 &gt;</a>
+                </div>
+                
+            </nav>
+        
+        
+    </article>
+</section>
+        </div>
+                
+            <section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+                
+                    <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/avatar.webp" />
+        </div>
+    </div>
+    <div class="textwidget">
+        
+            <ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#8%E7%A7%8D%E5%9F%BA%E6%9C%AC%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B"><span class="toc-number">1.</span> <span class="toc-text">8种基本数据类型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%87%AA%E5%8A%A8%E8%A3%85%E7%AE%B1%E6%8B%86%E7%AE%B1"><span class="toc-number">2.</span> <span class="toc-text">自动装箱拆箱</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#equals-%E5%92%8C-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">3.</span> <span class="toc-text">equals()和&#x3D;&#x3D;的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#String%E3%80%81StringBuffer%E5%92%8CStringBuilder%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">4.</span> <span class="toc-text">String、StringBuffer和StringBuilder的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AD%97%E8%8A%82%E6%B5%81%E5%92%8C%E5%AD%97%E7%AC%A6%E6%B5%81"><span class="toc-number">5.</span> <span class="toc-text">字节流和字符流</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BC%82%E5%B8%B8"><span class="toc-number">6.</span> <span class="toc-text">异常</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#amp-%E5%92%8C-amp-amp-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">7.</span> <span class="toc-text">&amp;和&amp;&amp;的区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#int%E5%92%8CInteger%E6%9C%89%E4%BB%80%E4%B9%88%E5%8C%BA%E5%88%AB"><span class="toc-number">8.</span> <span class="toc-text">int和Integer有什么区别</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%80%BC%E4%BC%A0%E9%80%92%E5%92%8C%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92"><span class="toc-number">9.</span> <span class="toc-text">值传递和引用传递</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Lamda%E8%A1%A8%E8%BE%BE%E5%BC%8F%E7%9A%84%E4%BC%98%E7%BC%BA%E7%82%B9"><span class="toc-number">10.</span> <span class="toc-text">Lamda表达式的优缺点</span></a></li></ol>
+        
+    </div>
+</aside>
+                
+                    <!-- Moved to about.ejs -->
+                
+                    
+  <aside id="krw-categories" class="widget widget-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类目录</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/Java%E5%AD%A6%E4%B9%A0/">Java学习</a><span class="category-list-count">12</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E7%AC%AC%E4%B8%80%E6%AC%A1/">第一次</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%8B%B1%E8%AF%AD%E5%AD%A6%E4%B9%A0/">英语学习</a><span class="category-list-count">8</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%9F%B3%E4%B9%90%E7%A9%BA%E9%97%B4/">音乐空间</a><span class="category-list-count">3</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E9%A1%B9%E7%9B%AE%E7%BB%8F%E5%8E%86/">项目经历</a><span class="category-list-count">3</span></li></ul>
+  </aside>
+
+
+                
+                    
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/apility/" style="font-size: 0.6em;">apility</a> <a href="/tags/bus/" style="font-size: 0.6em;">bus</a> <a href="/tags/city/" style="font-size: 0.6em;">city</a> <a href="/tags/comfort/" style="font-size: 0.6em;">comfort</a> <a href="/tags/communication/" style="font-size: 0.6em;">communication</a> <a href="/tags/contribute/" style="font-size: 0.6em;">contribute</a> <a href="/tags/convenient/" style="font-size: 0.6em;">convenient</a> <a href="/tags/develop/" style="font-size: 0.6em;">develop</a> <a href="/tags/education/" style="font-size: 0.6em;">education</a> <a href="/tags/enhance/" style="font-size: 0.6em;">enhance</a> <a href="/tags/facility/" style="font-size: 0.6em;">facility</a> <a href="/tags/flight/" style="font-size: 0.6em;">flight</a> <a href="/tags/foreign/" style="font-size: 0.6em;">foreign</a> <a href="/tags/free/" style="font-size: 0.6em;">free</a> <a href="/tags/hello/" style="font-size: 0.6em;">hello</a> <a href="/tags/improve/" style="font-size: 0.8em;">improve</a> <a href="/tags/information/" style="font-size: 0.6em;">information</a> <a href="/tags/invest/" style="font-size: 0.6em;">invest</a>
+      </div>
+  </aside>
+
+                
+                    
+  <aside id="krw-posts" class="widget widget-kratos-poststab">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/09/java-io-stream/"><i class="fa  fa-book"></i> 输入输出流</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/08/java-class-loading/"><i class="fa  fa-book"></i> 类加载</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/07/java-annotation/"><i class="fa  fa-book"></i> 注解</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/06/java-reflect/"><i class="fa  fa-book"></i> 反射</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2021/02/05/java-framework-annotations/"><i class="fa  fa-book"></i> 框架注解</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+                
+            </section>
+        
+        </div>
+    </div>
+</div>
+<footer>
+    <div id="footer">
+        <div class="kr-tool text-center">
+            <div class="tool">
+                
+                    <div class="box search-box">
+                        <a href="/search/">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="box theme-box" id="darkmode-switch">
+                        <span class="fa fa-adjust"></span>
+                    </div>
+                
+                
+            </div>
+            <div class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://t.me/CandyUnion"><i class="fa fa-telegram"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="https://twitter.com/Candiinya"><i class="fa fa-twitter"></i></a></li>
+                        
+                        
+                        
+                        <li><a target="_blank" rel="nofollow" href="https://github.com/yongkj"><i class="fa fa-github"></i></a></li>
+                        <li><a target="_blank" rel="nofollow" href="/atom.xml"><i class="fa fa-rss"></i></a></li>
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2021 yongkj 版权所有.</li>
+                            <li>本站已运行<span id="span_dt">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>Theme <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a></li>
+                            <li>Made with&nbsp;<i class="fa fa-heart throb" style="color:#d43f57"></i>&nbsp;by <a href="https://candinya.com" target="_blank" rel="nofollow">Candinya</a>.</li>
+                        </div>
+                        <div>
+                            <li>Powered by <a href="https://hexo.io" target="_blank" rel="nofollow">Hexo</a></li>
+                            <li>Hosted on <a href="https://www.yongkj.cn" target="_blank">勇往直前</a></li>
+                        </div>
+                        <div>
+                            
+                            
+                        </div>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+        <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@3.3.4/dist/js/bootstrap.min.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/nprogress@0.2.0/nprogress.js"></script>
+<script>const notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));</script>
+
+    <div>
+        <canvas id="snow"></canvas>
+        <script async type="text/javascript" src="/js/snow.min.js"></script>
+    </div>
+
+<script async src="/js/candy.min.js"></script>
+
+
+    <script defer src="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.js"></script>
+
+<script defer src="https://cdn.jsdelivr.net/npm/clipboard@2.0.6/dist/clipboard.min.js"></script>
+<script defer src="/js/kratosr.min.js"></script>
+<script defer src="/js/pjax.min.js"></script>
+
+
+    <script defer src="/js/kr-dark.min.js"></script>
+
+
+
+    </body>
+</html>
